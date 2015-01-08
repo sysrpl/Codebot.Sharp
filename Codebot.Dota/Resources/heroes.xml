@@ -1,0 +1,875 @@
+<?xml version="1.0" encoding="utf-8"?>
+<heroes>
+  <hero>
+    <id>1</id>
+    <name>antimage</name>
+    <localized_name>Anti-Mage</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, escape</roles>
+  </hero>
+  <hero>
+    <id>2</id>
+    <name>axe</name>
+    <localized_name>Axe</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>disabler, durable, initiator, jungler</roles>
+  </hero>
+  <hero>
+    <id>3</id>
+    <name>bane</name>
+    <localized_name>Bane</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, nuker, support</roles>
+  </hero>
+  <hero>
+    <id>4</id>
+    <name>bloodseeker</name>
+    <localized_name>Bloodseeker</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, jungler</roles>
+  </hero>
+  <hero>
+    <id>5</id>
+    <name>crystal_maiden</name>
+    <localized_name>Crystal Maiden</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, nuker, support</roles>
+  </hero>
+  <hero>
+    <id>6</id>
+    <name>drow_ranger</name>
+    <localized_name>Drow Ranger</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry</roles>
+  </hero>
+  <hero>
+    <id>7</id>
+    <name>earthshaker</name>
+    <localized_name>Earthshaker</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>disabler, initiator, support</roles>
+  </hero>
+  <hero>
+    <id>8</id>
+    <name>juggernaut</name>
+    <localized_name>Juggernaut</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, pusher</roles>
+  </hero>
+  <hero>
+    <id>9</id>
+    <name>mirana</name>
+    <localized_name>Mirana</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry, disabler, escape, nuker</roles>
+  </hero>
+  <hero>
+    <id>11</id>
+    <name>nevermore</name>
+    <localized_name>Shadow Fiend</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry, nuker</roles>
+  </hero>
+  <hero>
+    <id>10</id>
+    <name>morphling</name>
+    <localized_name>Morphling</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry, escape, initiator, nuker</roles>
+  </hero>
+  <hero>
+    <id>12</id>
+    <name>phantom_lancer</name>
+    <localized_name>Phantom Lancer</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, escape, pusher</roles>
+  </hero>
+  <hero>
+    <id>13</id>
+    <name>puck</name>
+    <localized_name>Puck</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, escape, initiator, nuker</roles>
+  </hero>
+  <hero>
+    <id>14</id>
+    <name>pudge</name>
+    <localized_name>Pudge</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>disabler, durable</roles>
+  </hero>
+  <hero>
+    <id>15</id>
+    <name>razor</name>
+    <localized_name>Razor</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry, durable, nuker</roles>
+  </hero>
+  <hero>
+    <id>16</id>
+    <name>sand_king</name>
+    <localized_name>Sand King</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>disabler, initiator, nuker</roles>
+  </hero>
+  <hero>
+    <id>17</id>
+    <name>storm_spirit</name>
+    <localized_name>Storm Spirit</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>carry, disabler, escape, initiator</roles>
+  </hero>
+  <hero>
+    <id>18</id>
+    <name>sven</name>
+    <localized_name>Sven</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, disabler, initiator, support</roles>
+  </hero>
+  <hero>
+    <id>19</id>
+    <name>tiny</name>
+    <localized_name>Tiny</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>disabler, durable, initiator, nuker</roles>
+  </hero>
+  <hero>
+    <id>20</id>
+    <name>vengefulspirit</name>
+    <localized_name>Vengeful Spirit</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>disabler, initiator, support</roles>
+  </hero>
+  <hero>
+    <id>21</id>
+    <name>windrunner</name>
+    <localized_name>Windranger</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, escape, nuker, support</roles>
+  </hero>
+  <hero>
+    <id>22</id>
+    <name>zuus</name>
+    <localized_name>Zeus</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>nuker, support</roles>
+  </hero>
+  <hero>
+    <id>23</id>
+    <name>kunkka</name>
+    <localized_name>Kunkka</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, disabler, durable, initiator</roles>
+  </hero>
+  <hero>
+    <id>25</id>
+    <name>lina</name>
+    <localized_name>Lina</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, nuker, support</roles>
+  </hero>
+  <hero>
+    <id>31</id>
+    <name>lich</name>
+    <localized_name>Lich</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>nuker, support</roles>
+  </hero>
+  <hero>
+    <id>26</id>
+    <name>lion</name>
+    <localized_name>Lion</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, nuker, support</roles>
+  </hero>
+  <hero>
+    <id>27</id>
+    <name>shadow_shaman</name>
+    <localized_name>Shadow Shaman</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, nuker, pusher, support</roles>
+  </hero>
+  <hero>
+    <id>28</id>
+    <name>slardar</name>
+    <localized_name>Slardar</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, disabler, durable, initiator</roles>
+  </hero>
+  <hero>
+    <id>29</id>
+    <name>tidehunter</name>
+    <localized_name>Tidehunter</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>disabler, durable, initiator, support</roles>
+  </hero>
+  <hero>
+    <id>30</id>
+    <name>witch_doctor</name>
+    <localized_name>Witch Doctor</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, support</roles>
+  </hero>
+  <hero>
+    <id>32</id>
+    <name>riki</name>
+    <localized_name>Riki</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, escape</roles>
+  </hero>
+  <hero>
+    <id>33</id>
+    <name>enigma</name>
+    <localized_name>Enigma</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, initiator, jungler, pusher</roles>
+  </hero>
+  <hero>
+    <id>34</id>
+    <name>tinker</name>
+    <localized_name>Tinker</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>nuker, pusher</roles>
+  </hero>
+  <hero>
+    <id>35</id>
+    <name>sniper</name>
+    <localized_name>Sniper</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry</roles>
+  </hero>
+  <hero>
+    <id>36</id>
+    <name>necrolyte</name>
+    <localized_name>Necrophos</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>carry, durable, support</roles>
+  </hero>
+  <hero>
+    <id>37</id>
+    <name>warlock</name>
+    <localized_name>Warlock</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, initiator, support</roles>
+  </hero>
+  <hero>
+    <id>38</id>
+    <name>beastmaster</name>
+    <localized_name>Beastmaster</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>disabler, durable, initiator</roles>
+  </hero>
+  <hero>
+    <id>39</id>
+    <name>queenofpain</name>
+    <localized_name>Queen of Pain</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>carry, escape, nuker</roles>
+  </hero>
+  <hero>
+    <id>40</id>
+    <name>venomancer</name>
+    <localized_name>Venomancer</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>initiator, nuker, pusher, support</roles>
+  </hero>
+  <hero>
+    <id>41</id>
+    <name>faceless_void</name>
+    <localized_name>Faceless Void</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, disabler, escape, initiator</roles>
+  </hero>
+  <hero>
+    <id>42</id>
+    <name>skeleton_king</name>
+    <localized_name>Wraith King</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, disabler, durable</roles>
+  </hero>
+  <hero>
+    <id>43</id>
+    <name>death_prophet</name>
+    <localized_name>Death Prophet</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>durable, nuker, pusher</roles>
+  </hero>
+  <hero>
+    <id>44</id>
+    <name>phantom_assassin</name>
+    <localized_name>Phantom Assassin</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, escape</roles>
+  </hero>
+  <hero>
+    <id>45</id>
+    <name>pugna</name>
+    <localized_name>Pugna</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>nuker, pusher, support</roles>
+  </hero>
+  <hero>
+    <id>46</id>
+    <name>templar_assassin</name>
+    <localized_name>Templar Assassin</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry, escape</roles>
+  </hero>
+  <hero>
+    <id>47</id>
+    <name>viper</name>
+    <localized_name>Viper</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry, durable</roles>
+  </hero>
+  <hero>
+    <id>48</id>
+    <name>luna</name>
+    <localized_name>Luna</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry, nuker</roles>
+  </hero>
+  <hero>
+    <id>49</id>
+    <name>dragon_knight</name>
+    <localized_name>Dragon Knight</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, disabler, durable, pusher</roles>
+  </hero>
+  <hero>
+    <id>50</id>
+    <name>dazzle</name>
+    <localized_name>Dazzle</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>support</roles>
+  </hero>
+  <hero>
+    <id>51</id>
+    <name>rattletrap</name>
+    <localized_name>Clockwerk</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>durable, initiator</roles>
+  </hero>
+  <hero>
+    <id>52</id>
+    <name>leshrac</name>
+    <localized_name>Leshrac</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, nuker, pusher, support</roles>
+  </hero>
+  <hero>
+    <id>53</id>
+    <name>furion</name>
+    <localized_name>Nature's Prophet</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>carry, escape, jungler, pusher</roles>
+  </hero>
+  <hero>
+    <id>54</id>
+    <name>life_stealer</name>
+    <localized_name>Lifestealer</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, durable, escape, jungler</roles>
+  </hero>
+  <hero>
+    <id>55</id>
+    <name>dark_seer</name>
+    <localized_name>Dark Seer</localized_name>
+    <kind>intelligence</kind>
+    <attack>melee</attack>
+    <roles>escape, initiator, nuker</roles>
+  </hero>
+  <hero>
+    <id>56</id>
+    <name>clinkz</name>
+    <localized_name>Clinkz</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry, escape</roles>
+  </hero>
+  <hero>
+    <id>57</id>
+    <name>omniknight</name>
+    <localized_name>Omniknight</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>durable, support</roles>
+  </hero>
+  <hero>
+    <id>58</id>
+    <name>enchantress</name>
+    <localized_name>Enchantress</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>durable, jungler, pusher, support</roles>
+  </hero>
+  <hero>
+    <id>59</id>
+    <name>huskar</name>
+    <localized_name>Huskar</localized_name>
+    <kind>strength</kind>
+    <attack>ranged</attack>
+    <roles>carry, durable, initiator</roles>
+  </hero>
+  <hero>
+    <id>60</id>
+    <name>night_stalker</name>
+    <localized_name>Night Stalker</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>durable, initiator</roles>
+  </hero>
+  <hero>
+    <id>61</id>
+    <name>broodmother</name>
+    <localized_name>Broodmother</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, escape, pusher</roles>
+  </hero>
+  <hero>
+    <id>62</id>
+    <name>bounty_hunter</name>
+    <localized_name>Bounty Hunter</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, escape, nuker</roles>
+  </hero>
+  <hero>
+    <id>63</id>
+    <name>weaver</name>
+    <localized_name>Weaver</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry, escape</roles>
+  </hero>
+  <hero>
+    <id>64</id>
+    <name>jakiro</name>
+    <localized_name>Jakiro</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, nuker, pusher</roles>
+  </hero>
+  <hero>
+    <id>65</id>
+    <name>batrider</name>
+    <localized_name>Batrider</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, escape, initiator, nuker</roles>
+  </hero>
+  <hero>
+    <id>66</id>
+    <name>chen</name>
+    <localized_name>Chen</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>jungler, pusher, support</roles>
+  </hero>
+  <hero>
+    <id>67</id>
+    <name>spectre</name>
+    <localized_name>Spectre</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, durable</roles>
+  </hero>
+  <hero>
+    <id>69</id>
+    <name>doom_bringer</name>
+    <localized_name>Doom</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, durable, nuker</roles>
+  </hero>
+  <hero>
+    <id>68</id>
+    <name>ancient_apparition</name>
+    <localized_name>Ancient Apparition</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, support</roles>
+  </hero>
+  <hero>
+    <id>70</id>
+    <name>ursa</name>
+    <localized_name>Ursa</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, durable, jungler</roles>
+  </hero>
+  <hero>
+    <id>71</id>
+    <name>spirit_breaker</name>
+    <localized_name>Spirit Breaker</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, disabler, durable, initiator</roles>
+  </hero>
+  <hero>
+    <id>72</id>
+    <name>gyrocopter</name>
+    <localized_name>Gyrocopter</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>disabler, initiator, nuker</roles>
+  </hero>
+  <hero>
+    <id>73</id>
+    <name>alchemist</name>
+    <localized_name>Alchemist</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, disabler, durable</roles>
+  </hero>
+  <hero>
+    <id>74</id>
+    <name>invoker</name>
+    <localized_name>Invoker</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>carry, escape, initiator, nuker</roles>
+  </hero>
+  <hero>
+    <id>75</id>
+    <name>silencer</name>
+    <localized_name>Silencer</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>carry, initiator, support</roles>
+  </hero>
+  <hero>
+    <id>76</id>
+    <name>obsidian_destroyer</name>
+    <localized_name>Outworld Devourer</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>carry</roles>
+  </hero>
+  <hero>
+    <id>77</id>
+    <name>lycan</name>
+    <localized_name>Lycan</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, durable, jungler, pusher</roles>
+  </hero>
+  <hero>
+    <id>78</id>
+    <name>brewmaster</name>
+    <localized_name>Brewmaster</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, durable, initiator, pusher</roles>
+  </hero>
+  <hero>
+    <id>79</id>
+    <name>shadow_demon</name>
+    <localized_name>Shadow Demon</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, nuker, support</roles>
+  </hero>
+  <hero>
+    <id>80</id>
+    <name>lone_druid</name>
+    <localized_name>Lone Druid</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry, durable, jungler, pusher</roles>
+  </hero>
+  <hero>
+    <id>81</id>
+    <name>chaos_knight</name>
+    <localized_name>Chaos Knight</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, disabler, durable, pusher</roles>
+  </hero>
+  <hero>
+    <id>82</id>
+    <name>meepo</name>
+    <localized_name>Meepo</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, disabler, initiator</roles>
+  </hero>
+  <hero>
+    <id>83</id>
+    <name>treant</name>
+    <localized_name>Treant Protector</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>disabler, durable, initiator, lanesupport</roles>
+  </hero>
+  <hero>
+    <id>84</id>
+    <name>ogre_magi</name>
+    <localized_name>Ogre Magi</localized_name>
+    <kind>intelligence</kind>
+    <attack>melee</attack>
+    <roles>disabler, durable, nuker</roles>
+  </hero>
+  <hero>
+    <id>85</id>
+    <name>undying</name>
+    <localized_name>Undying</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>disabler, durable, initiator, pusher</roles>
+  </hero>
+  <hero>
+    <id>86</id>
+    <name>rubick</name>
+    <localized_name>Rubick</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, nuker</roles>
+  </hero>
+  <hero>
+    <id>87</id>
+    <name>disruptor</name>
+    <localized_name>Disruptor</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, initiator, nuker, support</roles>
+  </hero>
+  <hero>
+    <id>88</id>
+    <name>nyx_assassin</name>
+    <localized_name>Nyx Assassin</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>disabler, nuker</roles>
+  </hero>
+  <hero>
+    <id>89</id>
+    <name>naga_siren</name>
+    <localized_name>Naga Siren</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, disabler, escape, pusher</roles>
+  </hero>
+  <hero>
+    <id>90</id>
+    <name>keeper_of_the_light</name>
+    <localized_name>Keeper of the Light</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>nuker, support</roles>
+  </hero>
+  <hero>
+    <id>91</id>
+    <name>wisp</name>
+    <localized_name>Io</localized_name>
+    <kind>strength</kind>
+    <attack>ranged</attack>
+    <roles>nuker, support</roles>
+  </hero>
+  <hero>
+    <id>92</id>
+    <name>visage</name>
+    <localized_name>Visage</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>disabler, durable, nuker</roles>
+  </hero>
+  <hero>
+    <id>93</id>
+    <name>slark</name>
+    <localized_name>Slark</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>escape</roles>
+  </hero>
+  <hero>
+    <id>94</id>
+    <name>medusa</name>
+    <localized_name>Medusa</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry</roles>
+  </hero>
+  <hero>
+    <id>95</id>
+    <name>troll_warlord</name>
+    <localized_name>Troll Warlord</localized_name>
+    <kind>agility</kind>
+    <attack>ranged</attack>
+    <roles>carry</roles>
+  </hero>
+  <hero>
+    <id>96</id>
+    <name>centaur</name>
+    <localized_name>Centaur Warrunner</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>disabler, durable, initiator</roles>
+  </hero>
+  <hero>
+    <id>97</id>
+    <name>magnataur</name>
+    <localized_name>Magnus</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, disabler, initiator, nuker</roles>
+  </hero>
+  <hero>
+    <id>98</id>
+    <name>shredder</name>
+    <localized_name>Timbersaw</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>durable, escape, nuker</roles>
+  </hero>
+  <hero>
+    <id>99</id>
+    <name>bristleback</name>
+    <localized_name>Bristleback</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>disabler, durable, initiator</roles>
+  </hero>
+  <hero>
+    <id>100</id>
+    <name>tusk</name>
+    <localized_name>Tusk</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>durable, initiator</roles>
+  </hero>
+  <hero>
+    <id>101</id>
+    <name>skywrath_mage</name>
+    <localized_name>Skywrath Mage</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>nuker, support</roles>
+  </hero>
+  <hero>
+    <id>102</id>
+    <name>abaddon</name>
+    <localized_name>Abaddon</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, durable, support</roles>
+  </hero>
+  <hero>
+    <id>103</id>
+    <name>elder_titan</name>
+    <localized_name>Elder Titan</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>durable, initiator</roles>
+  </hero>
+  <hero>
+    <id>104</id>
+    <name>legion_commander</name>
+    <localized_name>Legion Commander</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, durable</roles>
+  </hero>
+  <hero>
+    <name>techies</name>
+    <id>105</id>
+    <localized_name>Techies</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles></roles>
+  </hero>
+  <hero>
+    <id>106</id>
+    <name>ember_spirit</name>
+    <localized_name>Ember Spirit</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry, nuker</roles>
+  </hero>
+  <hero>
+    <id>107</id>
+    <name>earth_spirit</name>
+    <localized_name>Earth Spirit</localized_name>
+    <kind>strength</kind>
+    <attack>melee</attack>
+    <roles>carry, nuker</roles>
+  </hero>
+  <hero>
+    <id>109</id>
+    <name>terrorblade</name>
+    <localized_name>Terrorblade</localized_name>
+    <kind>agility</kind>
+    <attack>melee</attack>
+    <roles>carry</roles>
+  </hero>
+  <hero>
+    <id>110</id>
+    <name>phoenix</name>
+    <localized_name>Phoenix</localized_name>
+    <kind>strength</kind>
+    <attack>ranged</attack>
+    <roles>disabler, initiator, nuker</roles>
+  </hero>
+  <hero>
+    <id>111</id>
+    <name>oracle</name>
+    <localized_name>Oracle</localized_name>
+    <kind>intelligence</kind>
+    <attack>ranged</attack>
+    <roles>ranged, support, nuker</roles>
+  </hero>
+</heroes>

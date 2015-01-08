@@ -1,0 +1,72 @@
+﻿<regions>
+	<region>
+		<id>110</id>
+		<name>us_west</name>
+		<localized_name>US West</localized_name>
+	</region>
+	<region>
+		<id>120</id>
+		<name>us_west</name>
+		<localized_name>US West</localized_name>
+	</region>
+	<region>
+		<id>130</id>
+		<name>us_east</name>
+		<localized_name>US East</localized_name>
+	</region>
+	<region>
+		<id>140</id>
+		<name>europe_west</name>
+		<localized_name>Europe West</localized_name>
+	</region>
+	<region>
+		<id>150</id>
+		<name>south_korea</name>
+		<localized_name>South Korea</localized_name>
+	</region>
+	<region>
+		<id>160</id>
+		<name>southeast_asia</name>
+		<localized_name>Southeast Asia</localized_name>
+	</region>
+	<region>
+		<id>170</id>
+		<name>australia</name>
+		<localized_name>Australia</localized_name>
+	</region>
+	<region>
+		<id>180</id>
+		<name>australia</name>
+		<localized_name>Australia</localized_name>
+	</region>
+	<region>
+		<id>190</id>
+		<name>russia</name>
+		<localized_name>Russia</localized_name>
+	</region>
+	<region>
+		<id>200</id>
+		<name>europe_east</name>
+		<localized_name>Europe East</localized_name>
+	</region>
+	<region>
+		<id>210</id>
+		<name>south_america</name>
+		<localized_name>South America</localized_name>
+	</region>
+	<region>
+		<id>220</id>
+		<name>south_africa</name>
+		<localized_name>South Africa</localized_name>
+	</region>
+	<region>
+		<id>230</id>
+		<name>china</name>
+		<localized_name>China</localized_name>
+	</region>
+	<region>
+		<id>240</id>
+		<name>china</name>
+		<localized_name>China</localized_name>
+	</region>
+</regions>

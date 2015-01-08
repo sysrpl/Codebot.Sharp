@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7A745D4E-E9D4-4CC9-B0A0-9D272FD388F5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Codebot</RootNamespace>
+    <AssemblyName>Codebot</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Data\DataCommand.cs" />
+    <Compile Include="Data\DataConnect.cs" />
+    <Compile Include="Data\DataReaderExtensions.cs" />
+    <Compile Include="Drawing\BitmapExtentions.cs" />
+    <Compile Include="Net\Download.cs" />
+    <Compile Include="Net\Socket.cs" />
+    <Compile Include="Runtime\Converter.cs" />
+    <Compile Include="Runtime\StreamExtensions.cs" />
+    <Compile Include="Runtime\StringExtensions.cs" />
+    <Compile Include="Xml\Attribute.cs" />
+    <Compile Include="Xml\AttributeFiler.cs" />
+    <Compile Include="Xml\Attributes.cs" />
+    <Compile Include="Xml\Document.cs" />
+    <Compile Include="Xml\Element.cs" />
+    <Compile Include="Xml\ElementFiler.cs" />
+    <Compile Include="Xml\Elements.cs" />
+    <Compile Include="Xml\Filer.cs" />
+    <Compile Include="Xml\Markup.cs" />
+    <Compile Include="Xml\Node.cs" />
+    <Compile Include="Xml\Nodes.cs" />
+    <Compile Include="Xml\Wrapper.cs" />
+    <Compile Include="Runtime\ConsoleApp.cs" />
+    <Compile Include="Runtime\Settings.cs" />
+    <Compile Include="Runtime\PathMapper.cs" />
+    <Compile Include="Data\DataReplicator.cs" />
+    <Compile Include="Runtime\AttributeExtensions.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Runtime\" />
+    <Folder Include="Xml\" />
+  </ItemGroup>
+</Project>

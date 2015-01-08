@@ -1,0 +1,117 @@
+﻿<modes>
+	<mode>
+		<id>0</id>
+		<name>unknown</name>
+		<localized_name>Unknown</localized_name>
+	</mode>
+	<mode>
+		<id>1</id>
+		<name>all_pick</name>
+		<localized_name>All Pick</localized_name>
+	</mode>
+	<mode>
+		<id>2</id>
+		<name>captains_mode</name>
+		<localized_name>Captains Mode</localized_name>
+	</mode>
+	<mode>
+		<id>3</id>
+		<name>random_draft</name>
+		<localized_name>Random Draft</localized_name>
+	</mode>
+	<mode>
+		<id>4</id>
+		<name>single_draft</name>
+		<localized_name>Single Draft</localized_name>
+	</mode>
+	<mode>
+		<id>5</id>
+		<name>all_random</name>
+		<localized_name>All Random</localized_name>
+	</mode>
+	<mode>
+		<id>6</id>
+		<name>intro_or_death</name>
+		<localized_name>Intro or Death</localized_name>
+	</mode>
+	<mode>
+		<id>7</id>
+		<name>the_diretide</name>
+		<localized_name>The Diretide</localized_name>
+	</mode>
+	<mode>
+		<id>8</id>
+		<name>reverse_captains_mode</name>
+		<localized_name>Reverse Captains Mode</localized_name>
+	</mode>
+	<mode>
+		<id>9</id>
+		<name>greeviling</name>
+		<localized_name>Greeviling</localized_name>
+	</mode>
+	<mode>
+		<id>10</id>
+		<name>tutorial</name>
+		<localized_name>Tutorial</localized_name>
+	</mode>
+	<mode>
+		<id>11</id>
+		<name>mid_only</name>
+		<localized_name>Mid Only</localized_name>
+	</mode>
+	<mode>
+		<id>12</id>
+		<name>least_played</name>
+		<localized_name>Least Played</localized_name>
+	</mode>
+	<mode>
+		<id>13</id>
+		<name>new_player_pool</name>
+		<localized_name>New Player Pool</localized_name>
+	</mode>
+	<mode>
+		<id>14</id>
+		<name>compendium_matchmaking</name>
+		<localized_name>Compendium Matchmaking</localized_name>
+	</mode>
+	<mode>
+		<id>15</id>
+		<name>custom</name>
+		<localized_name>Custom</localized_name>
+	</mode>
+	<mode>
+		<id>16</id>
+		<name>captains_draft</name>
+		<localized_name>Captains Draft</localized_name>
+	</mode>
+	<mode>
+		<id>17</id>
+		<name>balanced_draft</name>
+		<localized_name>Balanced Draft</localized_name>
+	</mode>
+	<mode>
+		<id>18</id>
+		<name>ability_draft</name>
+		<localized_name>Ability Draft</localized_name>
+	</mode>
+	<mode>
+		<id>19</id>
+		<name>event</name>
+		<localized_name>Event</localized_name>
+	</mode>
+	<mode>
+		<id>20</id>
+		<name>all_random_death_match</name>
+		<localized_name>All Random Death Match</localized_name>
+	</mode>
+	<mode>
+		<id>21</id>
+		<name>solo_mid_1vs1</name>
+		<localized_name>Solo Mid 1vs1</localized_name>
+	</mode>
+	<mode>
+		<id>22</id>
+		<name>ranked_all_pick</name>
+		<localized_name>All Pick</localized_name>
+	</mode>
+</modes>
