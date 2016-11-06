@@ -10,6 +10,7 @@ namespace Codebot.Web
 		protected Element Response { get; private set; }
 
 		private Filer responseFiler;
+
 		protected Filer ResponseFiler
 		{
 			get
@@ -21,6 +22,7 @@ namespace Codebot.Web
 		}
 
 		private Filer requestFiler;
+
 		protected Filer RequestFiler
 		{
 			get

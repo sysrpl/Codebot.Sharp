@@ -12,7 +12,7 @@ namespace Codebot.Web
 
     public class TemplateHandler : BasicHandler
     {
-        private  StringBuilder output;
+        private StringBuilder output;
 
         public void ProcessTemplate(HttpContext context)
         {
@@ -54,6 +54,13 @@ namespace Codebot.Web
             }
             else
                 Run(output, templates);
+        }
+
+        public override string ToString()
+        {
+            if (output == null)
+                ProcessTemplate(Context, new StringBuilder());
+            return output.ToString();
         }
     }
 }

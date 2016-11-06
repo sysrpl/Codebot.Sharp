@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
+using System.Reflection;
 
 namespace Codebot.Web
 {
@@ -42,17 +43,10 @@ namespace Codebot.Web
                     expression = expression.Substring(0, commaIndex);
                 }
             }
-            try
-            {
-                if (String.IsNullOrEmpty(format))
-                    return (DataBinder.Eval(source, expression) ?? "").ToString();
-                string front = colon ? "{0:" : "{0,";
-                return DataBinder.Eval(source, expression, front + format + "}") ?? "";
-            }
-            catch (HttpException)
-            {
-                throw new FormatException();
-            }
+            if (String.IsNullOrEmpty(format))
+                return (DataBinder.Eval(source, expression) ?? "").ToString();
+            string front = colon ? "{0:" : "{0,";
+            return DataBinder.Eval(source, expression, front + format + "}") ?? "";
         }
 
         private static void FormatObjectBuffer(this string format, object source, StringBuilder buffer)
@@ -88,6 +82,12 @@ namespace Codebot.Web
                             break;
                         case State.OnOpenBracket:
                             c = reader.Read();
+							if (c <= 'A')
+							{
+								buffer.Append('{');
+								state = State.OutsideExpression;
+								break;
+							}
                             switch (c)
                             {
                                 case -1:
@@ -120,6 +120,12 @@ namespace Codebot.Web
                             break;
                         case State.OnCloseBracket:
                             c = reader.Read();
+							if (c <= 'A')
+							{
+								buffer.Append('}');
+								state = State.OutsideExpression;
+								break;
+							}
                             switch (c)
                             {
                                 case '}':
@@ -143,7 +149,7 @@ namespace Codebot.Web
             if (format == null)
                 throw new ArgumentNullException("format");
             if (buffer == null)
-                buffer = new StringBuilder(format.Length * 2);  
+                buffer = new StringBuilder(format.Length * 2);
             if (source is IEnumerable<object>)
             {
                 var list = source as IEnumerable<object>;

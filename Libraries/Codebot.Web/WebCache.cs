@@ -213,8 +213,10 @@ namespace Codebot.Web
         {
             var list = new List<CacheInfo>();
             lock (cache)
+            {
                 foreach (var key in cache.Keys)
                     list.Add(new CacheInfo(key, cache[key]));
+            }
             return list;
         }
     }

@@ -11,15 +11,26 @@ namespace Codebot.Net
 {
 	public static class Download
 	{
+
+        public static string TextWithHeaders(string url, params string[] headers)
+        {
+            using (WebClient client = new WebClient())
+            {
+                foreach (var s in headers)
+					if (!s.IsBlank())
+                    	client.Headers.Add(s);
+                using (Stream stream = client.OpenRead(url))
+                using (StreamReader reader = new StreamReader(stream))
+                    return reader.ReadToEnd();
+            }
+        }
+
 		public static string Text(string url)
 		{
-			using (WebClient client = new WebClient())
-			using (Stream stream = client.OpenRead(url))
-			using (StreamReader reader = new StreamReader(stream))
-				return reader.ReadToEnd();
+			return TextWithHeaders(url);
 		}
 
-		public static string Text(string url, params object[] args)
+		public static string Text(string url, params string[] args)
 		{
 			return Text(String.Format(url, args));
 		}
@@ -29,7 +40,7 @@ namespace Codebot.Net
 			return new Document(Text(url));
 		}
 
-		public static Document Xml(string url, params object[] args)
+		public static Document Xml(string url, params string[] args)
 		{
 			return new Document(Text(url, args));
 		}

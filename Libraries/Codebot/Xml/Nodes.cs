@@ -7,36 +7,44 @@ namespace Codebot.Xml
 {
 	public abstract class Nodes<T> : Wrapper, IList, ICollection, IEnumerable, IEnumerable<T> where T : Node
 	{
-		internal Nodes (XmlNode node) : base(node)
+		internal Nodes(XmlNode node) : base(node)
 		{
 		}
 
-		public T this [string name] {
-			get {
+		public T this[string name]
+		{
+			get
+			{
 				XmlNode node = GetItem(name);
 				if (node == null)
 					return null;
 				return CreateElement(node);
 			}
-			set {
-				Replace(this [name], value);
+			set
+			{
+				Replace(this[name], value);
 			}
 		}
 
-		public T this [int index] {
-			get {
+		public T this[int index]
+		{
+			get
+			{
 				return CreateElement(GetItem(index));
 			}
 
-			set {
-				Replace(this [index], value);
+			set
+			{
+				Replace(this[index], value);
 			}
 		}
 
 		public abstract int Count { get; }
 
-		internal XmlNode InternalNode {
-			get {
+		internal XmlNode InternalNode
+		{
+			get
+			{
 				return (XmlNode)Controller;
 			}
 		}
@@ -45,9 +53,9 @@ namespace Codebot.Xml
 		{
 			object instance = null;
 			if (typeof(T) == typeof(Attribute))
-				instance = new Attribute (node as XmlAttribute);
+				instance = new Attribute(node as XmlAttribute);
 			else if (typeof(T) == typeof(Element))
-				instance = new Element (node as XmlElement);
+				instance = new Element(node as XmlElement);
 			return instance as T;
 		}
 
@@ -92,7 +100,7 @@ namespace Codebot.Xml
 
 		public void Delete(int index)
 		{
-			InternalNode.RemoveChild(this [index].InternalNode);
+			InternalNode.RemoveChild(this[index].InternalNode);
 		}
 
 		public void Delete(string name)
@@ -114,15 +122,15 @@ namespace Codebot.Xml
 				InternalNode.InsertBefore(GetItem(index), node.InternalNode);
 		}
 
-        public void InsertAfter(T child, T after)
-        {
-            InternalNode.InsertAfter(child, after);
-        }
+		public void InsertAfter(T child, T after)
+		{
+			InternalNode.InsertAfter(child, after);
+		}
 
-        public void InsertBefore(T child, T before)
-        {
-            InternalNode.InsertBefore(child, before);
-        }
+		public void InsertBefore(T child, T before)
+		{
+			InternalNode.InsertBefore(child, before);
+		}
 
 		public void Move(int curIndex, int newIndex)
 		{
@@ -145,47 +153,42 @@ namespace Codebot.Xml
 		}
 
 		#region IEnumerable Members
-
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			for (int i = 0; i < Count; i++)
 			{
-				yield return this [i];
+				yield return this[i];
 			}
 		}
-
 		#endregion
 
 		#region IEnumerable<T> Members
-
 		IEnumerator<T> IEnumerable<T>.GetEnumerator()
 		{
 			for (int i = 0; i < Count; i++)
 			{
-				yield return this [i];
+				yield return this[i];
 			}
 		}
-
 		#endregion
 
 		#region ICollection Members
-
 		public void CopyTo(Array array, int index)
 		{
 		}
 
-		public bool IsSynchronized {
+		public bool IsSynchronized
+		{
 			get { return false; }
 		}
 
-		public object SyncRoot {
+		public object SyncRoot
+		{
 			get { return null; }
 		}
-
 		#endregion
 
 		#region IList Members
-
 		public int Add(object value)
 		{
 			return -1;
@@ -205,11 +208,13 @@ namespace Codebot.Xml
 		{
 		}
 
-		public bool IsFixedSize {
+		public bool IsFixedSize
+		{
 			get { return true; }
 		}
 
-		public bool IsReadOnly {
+		public bool IsReadOnly
+		{
 			get { return true; }
 		}
 
@@ -221,14 +226,16 @@ namespace Codebot.Xml
 		{
 		}
 
-		object IList.this [int index] {
-			get {
+		object IList.this[int index]
+		{
+			get
+			{
 				return GetItem(index);
 			}
-			set {
+			set
+			{
 			}
 		}
-
 		#endregion
 	}
 }

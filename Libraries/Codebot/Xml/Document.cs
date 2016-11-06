@@ -38,7 +38,7 @@ namespace Codebot.Xml
             }
         }
 
-        public override string Text
+		public override string Text
         {
             get
             {
@@ -229,7 +229,7 @@ namespace Codebot.Xml
             XmlNodeList nodes = InternalDocument.SelectNodes(xpath);
             if (nodes == null)
                 return null;
-            return new Elements(nodes, InternalDocument);
+            return new ElementSelect(nodes, InternalDocument);
         }
 
         public Elements FindNodes(string xpath, params object[] args)
@@ -237,7 +237,7 @@ namespace Codebot.Xml
             XmlNodeList nodes = InternalDocument.SelectNodes(String.Format(xpath, args));
             if (nodes == null)
                 return null;
-            return new Elements(nodes, InternalDocument);
+            return new ElementSelect(nodes, InternalDocument);
         }
 
         public Document Clone()
