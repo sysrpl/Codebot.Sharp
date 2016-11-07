@@ -12,8 +12,8 @@ namespace Codebot.Storage
 	/// </summary>
 	public class StorageService
 	{
-		string secretAccessKey;
-		StorageAuthorizer authorizer;
+		private string secretAccessKey;
+		private StorageAuthorizer authorizer;
 
 		/// <summary>
 		/// Reports progress for any operation that adds an object to a bucket.

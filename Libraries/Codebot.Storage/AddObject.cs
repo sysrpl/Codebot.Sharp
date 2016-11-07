@@ -114,8 +114,7 @@ namespace Codebot.Storage
         {
             // sanity check
             if (!contentLengthWasSet)
-                throw new InvalidOperationException("Amazon Storage requires that you specify ContentLength when adding an object.");
-
+                throw new InvalidOperationException("Storage requires that you specify ContentLength when adding an object.");
             // write canned ACL, if it's not private (which is implied by default)
             switch (CannedAcl)
             {
@@ -126,18 +125,14 @@ namespace Codebot.Storage
                 case CannedAcl.AuthenticatedRead:
                     WebRequest.Headers[StorageHeaders.CannedAcl] = "authenticated-read"; break;
             }
-
             if (Expires.HasValue)
                 WebRequest.Headers[HttpRequestHeader.Expires] = Expires.Value.ToUniversalTime().ToString("r");
-
             if (CacheControl != null)
                 WebRequest.Headers[HttpRequestHeader.CacheControl] = CacheControl;
-
             if (metadata != null)
                 foreach (string key in metadata)
                     foreach (string value in metadata.GetValues(key))
                         WebRequest.Headers.Add(StorageHeaders.MetadataPrefix + key, value);
-
             base.Authorize();
         }
 
@@ -159,7 +154,6 @@ namespace Codebot.Storage
         {
             using (Stream stream = GetRequestStream())
                 action(stream);
-
             GetResponse().Close();
         }
 
