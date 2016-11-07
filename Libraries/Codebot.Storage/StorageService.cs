@@ -288,7 +288,6 @@ namespace Codebot.Storage
 			while (true)
 			{
 				var request = new ListObjectsRequest(this, bucketName, args);
-
 				using (var response = request.GetResponse())
 				{
 					ListEntry lastEntry = null;
@@ -298,7 +297,6 @@ namespace Codebot.Storage
 						lastEntry = entry;
 						yield return entry;
 					}
-
 					if (response.IsTruncated)
 					{
 						// if you specified a delimiter, Storage is supposed to give us the marker
@@ -367,20 +365,14 @@ namespace Codebot.Storage
 		{
 			var uriString = new StringBuilder();
 			uriString.Append("http://");
-
 			if (UseSubdomains)
 				uriString.Append(bucketName).Append('.');
-
 			uriString.Append(Host);
-
 			if (CustomPort != 0)
 				uriString.Append(':').Append(CustomPort);
-
 			uriString.Append('/');
-
 			if (!UseSubdomains)
 				uriString.Append(bucketName).Append('/');
-
 			// EscapeDataString allows keys to have any characters, including "+".
 			uriString.Append(Uri.EscapeDataString(key));
 
