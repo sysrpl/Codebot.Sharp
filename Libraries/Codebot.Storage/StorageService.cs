@@ -63,7 +63,7 @@ namespace Codebot.Storage
 						Host = "storage.googleapis.com";
 						break;
 					default:
-						Host = "Storage.amazonaws.com";
+						Host = "s3.amazonaws.com";
 						break;
 				}
 			}
