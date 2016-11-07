@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7929F19A-633D-43C8-A8D1-DA65E870C4DB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Codebot.Storage</RootNamespace>
+    <AssemblyName>Codebot.Storage</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AccessControl.cs" />
+    <Compile Include="AddObject.cs" />
+    <Compile Include="Bucket.cs" />
+    <Compile Include="BucketAccess.cs" />
+    <Compile Include="CopyObject.cs" />
+    <Compile Include="CreateBucket.cs" />
+    <Compile Include="DeleteBucket.cs" />
+    <Compile Include="DeleteObject.cs" />
+    <Compile Include="GetAllBuckets.cs" />
+    <Compile Include="GetBucketLocation.cs" />
+    <Compile Include="GetObject.cs" />
+    <Compile Include="Identity.cs" />
+    <Compile Include="ListEntries.cs" />
+    <Compile Include="ListObjects.cs" />
+    <Compile Include="ObjectTransfer.cs" />
+    <Compile Include="StorageAuthorizer.cs" />
+    <Compile Include="StorageErrorCode.cs" />
+    <Compile Include="StorageException.cs" />
+    <Compile Include="StorageProvider.cs" />
+    <Compile Include="StorageRequest.cs" />
+    <Compile Include="StorageResponse.cs" />
+    <Compile Include="StorageService.cs" />
+    <Compile Include="StorageHeaders.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

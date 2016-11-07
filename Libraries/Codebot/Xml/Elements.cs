@@ -7,9 +7,13 @@ namespace Codebot.Xml
 {
     public class Elements : Nodes<Element>
 	{
+		internal Elements(XmlNode node) : base(node)
+		{
+		}
+
 		protected override IEnumerable GetEnumerable()
 		{
-			return List;
+			return InternalNode.ChildNodes;
 		}
 
 		protected override XmlNode GetItem(string name)
@@ -19,21 +23,14 @@ namespace Codebot.Xml
 
 		protected override XmlNode GetItem(int index)
 		{
-			return List.Item(index);
-		}
-
-		internal XmlNodeList List { get; set; }
-
-		internal Elements(XmlNodeList list, XmlNode node) : base(node)
-		{
-			List = list;
+			return InternalNode.ChildNodes.Item(index);
 		}
 
 		public override int Count
 		{
 			get
 			{
-				return List.Count;
+				return InternalNode.ChildNodes.Count;
 			}
 		}
 	}

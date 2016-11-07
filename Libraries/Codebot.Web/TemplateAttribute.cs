@@ -5,7 +5,7 @@ namespace Codebot.Web
     [AttributeUsage(AttributeTargets.All,  AllowMultiple = true)]
     public class TemplateAttribute : Attribute
     {
-        public static string TemplateFolder = "Templates/";
+        public static string TemplateFolder = "/Templates/";
         public static string TemplateExtension = ".template";
 
         public TemplateAttribute(string name)

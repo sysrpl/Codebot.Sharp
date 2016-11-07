@@ -1,16 +1,11 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.Collections.Generic;
+﻿using System.Data.Common;
 using System.Text;
-using System.Linq;
-using System.Reflection;
-using System.Web;
 
 namespace Codebot.Web
 {
-    public class DataTemplate : TemplateHandler 
+	public class DataTemplate : TemplateHandler 
     {
-        protected SqlDataReader Reader;
+        protected DbDataReader Reader;
 
         protected abstract class BaseDataObject
         {
@@ -28,7 +23,7 @@ namespace Codebot.Web
         protected abstract class DataObject<T> : BaseDataObject where T : DataTemplate
         {
             protected T Owner { get; private set; }
-            protected SqlDataReader Reader { get { return Owner.Reader; } }
+            protected DbDataReader Reader { get { return Owner.Reader; } }
 
             protected override void SetOwner(DataTemplate owner)
             {

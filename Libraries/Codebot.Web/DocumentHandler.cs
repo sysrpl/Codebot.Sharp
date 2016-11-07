@@ -17,6 +17,7 @@ namespace Codebot.Web
 		}
 
 		private Document responseDocument;
+
 		public Document ResponseDocument
 		{
 			get
@@ -53,6 +54,7 @@ namespace Codebot.Web
 		}
 
 		private string method;
+
 		protected string Method
 		{
 			get

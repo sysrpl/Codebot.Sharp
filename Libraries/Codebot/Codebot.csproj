@@ -61,6 +61,11 @@
     <Compile Include="Runtime\PathMapper.cs" />
     <Compile Include="Data\DataReplicator.cs" />
     <Compile Include="Runtime\AttributeExtensions.cs" />
+    <Compile Include="Runtime\Program.cs" />
+    <Compile Include="Data\DataParameters.cs" />
+    <Compile Include="Net\CookieWebClient.cs" />
+    <Compile Include="Xml\ElementSelect.cs" />
+    <Compile Include="Runtime\DateTimeExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

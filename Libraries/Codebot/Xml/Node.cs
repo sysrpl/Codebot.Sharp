@@ -7,54 +7,82 @@ namespace Codebot.Xml
 {
 	public class Node : Markup
 	{
-		internal Node ()
+		internal Node()
 		{
 		}
 
-		internal Node (XmlNode node) : base(node)
+		internal Node(XmlNode node) : base(node)
 		{
 		}
 
-		public Document Document {
-			get {
-				return new Document (InternalNode.OwnerDocument);
+		public Document Document
+		{
+			get
+			{
+				return new Document(InternalNode.OwnerDocument);
 			}
 		}
 
-		public string Name {
-			get {
+		public string Name
+		{
+			get
+			{
 				return InternalNode.Name;
 			}
 		}
 
-		public Element Parent {
-			get {
+		public Element Parent
+		{
+			get
+			{
 				XmlElement node = InternalNode.ParentNode as XmlElement;
-				return node == null ? null : new Element (node);
+				return node == null ? null : new Element(node);
 			}
 		}
 
-		public override string Text {
-			get {
+		public Attribute AsAttribute()
+		{
+			if (InternalNode is XmlAttribute)
+				return new Attribute(InternalNode as XmlAttribute);
+			return null;
+		}
+
+		public Element AsElement()
+		{
+			if (InternalNode is XmlElement)
+				return new Element(InternalNode as XmlElement);
+			return null;
+		}
+
+		public override string Text
+		{
+			get
+			{
 				return InternalNode.OuterXml;
 			}
 
-			set {
+			set
+			{
 			}
 		}
 
-		public string Value {
-			get {
+		public virtual string Value
+		{
+			get
+			{
 				return InternalNode.InnerXml;
 			}
 
-			set {
+			set
+			{
 				InternalNode.InnerXml = value;
 			}
 		}
 
-		internal XmlNode InternalNode {
-			get {
+		internal XmlNode InternalNode
+		{
+			get
+			{
 				return (XmlNode)Controller;
 			}
 		}
@@ -70,13 +98,13 @@ namespace Codebot.Xml
 			XmlElement parent = node, child = null;
 			for (int i = 0; i < items.Length; i++)
 			{
-				child = parent.SelectSingleNode(items [i]) as XmlElement;
+				child = parent.SelectSingleNode(items[i]) as XmlElement;
 				if (child != null)
 				{
 					parent = child;
 					continue;
 				}
-				child = node.OwnerDocument.CreateElement(items [i]);
+				child = node.OwnerDocument.CreateElement(items[i]);
 				parent.AppendChild(child);
 				parent = child;
 			}

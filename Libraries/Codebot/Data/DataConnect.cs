@@ -1,24 +1,15 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.IO;
 using System.Reflection;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.Common;
 
 namespace Codebot.Data
 {
     public static class DataConnect
     {
-        static DataConnect()
-        {
-            ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog={0};Integrated Security=SSPI;Pooling=True";
-        }
-
-        private static SqlConnection CreateConnection()
-        {
-            SqlConnection connection = new SqlConnection(ConnectionString);
-            return connection;
-        }
+        public static Func<DbConnection> CreateConnection { get; set; }
 
         public static string ConnectionString { get; set; }
 
@@ -35,59 +26,61 @@ namespace Codebot.Data
             return LoadResourceText(Assembly.GetCallingAssembly(), name);
         }
 
-        public static SqlDataReader ExecuteReader(string query, bool resource = false, int timeout = 30)
+        public static DbDataReader ExecuteReader(string query, bool resource = false, int timeout = 30)
         {
-			if (resource)
-				query = LoadResourceText(Assembly.GetCallingAssembly(), query);
-            return ExecuteReader(query, false, timeout, new SqlParameter[] { });
+            if (resource)
+                query = LoadResourceText(Assembly.GetCallingAssembly(), query);
+            return ExecuteReader(query, false, timeout, null);
         }
 
-        public static SqlDataReader ExecuteReader(string query, bool resource, params SqlParameter[] parameters)
+        public static DbDataReader ExecuteReader(string query, bool resource, DataParameters parameters)
         {
             if (resource)
                 query = LoadResourceText(Assembly.GetCallingAssembly(), query);
             return ExecuteReader(query, false, 30, parameters);
         }
 
-        public static SqlDataReader ExecuteReader(string query, bool resource, int timeout, params SqlParameter[] parameters)
+        public static DbDataReader ExecuteReader(string query, bool resource, int timeout, DataParameters parameters = null)
         {
             if (resource)
                 query = LoadResourceText(Assembly.GetCallingAssembly(), query);
-            SqlConnection connection = CreateConnection();
+            var connection = CreateConnection();
             connection.Open();
-            using (SqlCommand command = new SqlCommand(query, connection))
+            using (var command = connection.CreateCommand())
             {
-                command.Parameters.AddRange(parameters);
-                SqlDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
-                return reader;
+                command.CommandText = query;
+                command.CommandTimeout = timeout;
+                DataParameters.Build(command, parameters);
+                return command.ExecuteReader(CommandBehavior.CloseConnection);
             }
         }
 
         public static int ExecuteNonQuery(string query, bool resource = false, int timeout = 30)
         {
-			if (resource)
-				query = LoadResourceText(Assembly.GetCallingAssembly(), query);
-            return ExecuteNonQuery(query, false, timeout, new SqlParameter[] { });
+            if (resource)
+                query = LoadResourceText(Assembly.GetCallingAssembly(), query);
+            return ExecuteNonQuery(query, false, timeout, null);
         }
 
-        public static int ExecuteNonQuery(string query, bool resource, params SqlParameter[] parameters)
+        public static int ExecuteNonQuery(string query, bool resource, DataParameters parameters = null)
         {
             if (resource)
                 query = LoadResourceText(Assembly.GetCallingAssembly(), query);
             return ExecuteNonQuery(query, false, 30, parameters);
         }
 
-        public static int ExecuteNonQuery(string query, bool resource, int timeout, params SqlParameter[] parameters)
+        public static int ExecuteNonQuery(string query, bool resource, int timeout, DataParameters parameters = null)
         {
             if (resource)
                 query = LoadResourceText(Assembly.GetCallingAssembly(), query);
-            using (SqlConnection connection = CreateConnection())
+            using (var connection = CreateConnection())
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (var command = connection.CreateCommand())
                 {
+                    command.CommandText = query;
                     command.CommandTimeout = timeout;
-                    command.Parameters.AddRange(parameters);
+                    DataParameters.Build(command, parameters);
                     return command.ExecuteNonQuery();
                 }
             }
