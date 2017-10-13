@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using Codebot.Runtime;
 using Codebot.Xml;
-using System.Diagnostics;
 
 namespace Codebot.Web
 {
@@ -38,6 +39,20 @@ namespace Codebot.Web
 		public void Attach(HttpContext context)
 		{
 			Context = context;
+		}
+
+		public PathQuery PathAndQuery
+		{
+			get
+			{
+				const string url = "HTTP_X_ORIGINAL_URL";
+				var s = Request.ServerVariables.AllKeys.Contains(url) ? Request.ServerVariables[url] : Request.Url.PathAndQuery;
+				var a = s.Split('?');
+				PathQuery p;
+				p.Path = HttpUtility.UrlDecode(a[0]);
+				p.Query = a.Length > 1 ? HttpUtility.UrlDecode(a[1]) : "";
+				return p;
+			}
 		}
 
 		/// <summary>
@@ -260,7 +275,6 @@ namespace Codebot.Web
 			return !String.IsNullOrWhiteSpace(s);
 		}
 
-
 		/// <summary>
 		/// Returns true if form request contains key with a value
 		/// </summary>
@@ -370,40 +384,25 @@ namespace Codebot.Web
 		}
 
 		/// <summary>
-		/// Map a physical file path to a server url
+		/// Map a server url to a physical file path
 		/// </summary>
 		public string MapPath(string path)
 		{
-			//path = Path.DirectorySeparatorChar == '/' ? path.Replace('\\', '/') : path.Replace('/', '\\');
 			return Context.Server.MapPath(path);
 		}
 
 		/// <summary>
-		/// Map a server url to a physical file path
+		/// Map a physical file path to a server url
 		/// </summary>
-		/*protected string ReverseMapPath(string path)
-		{
-			if (!path.EndsWith("\\"))
-				path += "\\";
-			path = path.Replace(Request.ServerVariables["APPL_PHYSICAL_PATH"], String.Empty);
-			path = path.Replace("\\", "/");
-			if (!path.StartsWith("/"))
-				path = "/" + path;
-			return path;
-		}*/
-
 		public string ReverseMapPath(string path)
 		{
-			path = path.Replace("\\", "/");
-			if (!path.EndsWith("/"))
-				path += "/";
-			string root = Server.MapPath("/");
-			root = root.Replace("\\", "/");
-			if (!root.EndsWith("/"))
-				root += "/";
-			string res = "/" + path.Replace(root, "");
-			return res;
+			string s = MapPath("~");
+			s = path.Replace(s, "").Replace("\\", "/");
+			if (s.Length == 0 || s[0] != '/')
+				s = "/" + s;
+			return s;
 		}
+
 		/// <summary>
 		/// Returns the content type for a file
 		/// </summary>
@@ -412,10 +411,16 @@ namespace Codebot.Web
 			string ext = fileName.Split('.').Last().ToLower();
 			switch (ext)
 			{
+				case "7z":
+					return "application/x-7z-compressed";
+				case "aac":
+					return "audio/aac";
 				case "avi":
 					return "video/avi";
 				case "bmp":
 					return "image/bmp";
+				case "css":
+					return "text/css";
 				case "csv":
 					return "text/csv";
 				case "doc":
@@ -425,19 +430,22 @@ namespace Codebot.Web
 				case "gif":
 					return "image/gif";
 				case "htm":
-					return "text/html";
 				case "html":
 					return "text/html";
 				case "jpeg":
-					return "image/jpeg";
 				case "jpg":
 					return "image/jpeg";
 				case "js":
 					return "application/javascript";
 				case "json":
 					return "application/json";
+				case "mov":
+					return "video/quicktime";
+				case "m4a":
+					return "audio/mp4a";
 				case "mp3":
 					return "audio/mpeg";
+				case "m4v":
 				case "mp4":
 					return "video/mp4";
 				case "mpeg":
@@ -445,7 +453,9 @@ namespace Codebot.Web
 				case "mpg":
 					return "video/mpeg";
 				case "ogg":
-					return "application/ogg";
+					return "audio/ogg";
+				case "ogv":
+					return "video/ogv";
 				case "pdf":
 					return "application/pdf";
 				case "png":
@@ -459,9 +469,12 @@ namespace Codebot.Web
 				case "swf":
 					return "application/x-shockwave-flash";
 				case "tif":
-					return "image/tiff";
 				case "tiff":
 					return "image/tiff";
+				case "ini":
+				case "cfg":
+				case "cs":
+				case "pas":
 				case "txt":
 					return "text/plain";
 				case "wav":
@@ -667,67 +680,113 @@ namespace Codebot.Web
 		}
 
 		/// <summary>
+		/// Transmits a file using seekable range
+		/// </summary>
+		/// <remarks>See http://stackoverflow.com/questions/5429947/
+		/// supporting-resumable-http-downloads-through-an-ashx-handler</remarks>  
+		public long TransmitFile(string fileName, bool attachment = false)
+		{
+			if (!File.Exists(fileName))
+				fileName = MapPath(fileName);
+			var fileInfo = new FileInfo(fileName);
+			var responseLength = fileInfo.Exists ? fileInfo.Length : 0;
+			var startIndex = 0;
+			var etag = Read("v");
+			if (Request.Headers["If-Match"] == "*" && !fileInfo.Exists ||
+				Request.Headers["If-Match"] != null && Request.Headers["If-Match"] != "*" && Request.Headers["If-Match"] != etag)
+			{
+				Response.StatusCode = (int)HttpStatusCode.PreconditionFailed;
+				Response.End();
+				return 0;
+			}
+			if (!fileInfo.Exists)
+			{
+				Response.StatusCode = (int)HttpStatusCode.NotFound;
+				Response.End();
+				return 0;
+			}
+			if (Request.Headers["If-None-Match"] == etag)
+			{
+				Response.StatusCode = (int)HttpStatusCode.NotModified;
+				Response.End();
+				return 0;
+			}
+			if (Request.Headers["Range"] != null && (Request.Headers["If-Range"] == null || Request.Headers["IF-Range"] == etag))
+			{
+				var match = Regex.Match(Request.Headers["Range"], @"bytes=(\d*)-(\d*)");
+				startIndex = Convert<int>(match.Groups[1].Value);
+				responseLength = (Convert<int?>(match.Groups[2].Value) + 1 ?? fileInfo.Length) - startIndex;
+				Response.StatusCode = (int)HttpStatusCode.PartialContent;
+				Response.Headers["Content-Range"] = "bytes " + startIndex + "-" + (startIndex + responseLength - 1) + "/" + fileInfo.Length;
+			}
+			Response.Headers["Accept-Ranges"] = "bytes";
+			Response.AddHeader("Content-Disposition", (attachment ? "attachment; " : "") + "filename=" + Path.GetFileName(fileName));
+			Response.ContentType = MapContentType(fileName);
+			Response.Headers["Content-Length"] = responseLength.ToString();
+			Response.Cache.SetCacheability(HttpCacheability.Public);
+			Response.Cache.SetETag(etag);
+			Response.TransmitFile(fileName, startIndex, responseLength);
+			return responseLength;
+		}
+
+		/// <summary>
 		/// Clears the response and transmits a file using a content type and attachment
 		/// </summary>
-		private void SendFileData(string fileName, string contentType, bool attachment)
+		private long SendFileData(string fileName, string contentType, bool attachment)
 		{
-			fileName = MapPath(fileName);
+			if (!File.Exists(fileName))
+				fileName = MapPath(fileName);
 			Context.Response.Clear();
 			Context.Response.Buffer = true;
 			Context.Response.ContentType = contentType;
+			Context.Response.AddHeader("Content-Length", new FileInfo(fileName).Length.ToString());
+			var disposition = "";
 			if (attachment)
-				Context.Response.AddHeader("Content-Disposition", String.Format("attachment; fileName=\"{0}\"",
-								Path.GetFileName(fileName)));
+				disposition = "attachment; ";
+			var name = Path.GetFileName(fileName);
+			Context.Response.AddHeader("Content-Disposition", $"{disposition}fileName=\"{name}\"");
+			long responseLength = 0;
 			using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
 			{
-				const int bufferSize = 10240;
+				const int bufferSize = 32 * 1024;
 				byte[] buffer = new byte[bufferSize];
-				int bytesRead = 0;
+				long bytesRead = 0;
 				do
 				{
 					bytesRead = stream.Read(buffer, 0, buffer.Length);
+					responseLength += bytesRead;
 					if (bytesRead == bufferSize)
 						Context.Response.BinaryWrite(buffer);
 					else if (bytesRead > 0)
 					{
-						Array.Copy(buffer, buffer, bytesRead);
-						Context.Response.BinaryWrite(buffer);
+						byte[] small = new byte[bytesRead];
+						Array.Copy(buffer, small, bytesRead);
+						Context.Response.BinaryWrite(small);
 					}
 				} while (bytesRead == bufferSize);
 			}
 			Context.Response.End();
+			return responseLength;
 		}
 
 		/// <summary>
 		/// Clears the response and transmits an attachment file
 		/// </summary>
-		public void SendAttachment(string fileName)
+		public long SendAttachment(string fileName, string contentType = null)
 		{
-			SendFileData(fileName, MapContentType(fileName), true);
-		}
-
-		/// <summary>
-		/// Clears the response and transmits an attachment file using a content type
-		/// </summary>
-		public void SendAttachment(string fileName, string contentType)
-		{
-			SendFileData(fileName, contentType, true);
+			if (string.IsNullOrWhiteSpace(contentType))
+				contentType = MapContentType(fileName);
+			return SendFileData(fileName, contentType, true);
 		}
 
 		/// <summary>
 		/// Clears the response and transmits a file as a page
 		/// </summary>
-		public void SendFile(string fileName)
+		public long SendFile(string fileName, string contentType = null)
 		{
-			SendFileData(fileName, MapContentType(fileName), false);
-		}
-
-		/// <summary>
-		/// Clears the response and transmits a file as a page using a content type
-		/// </summary>
-		public void SendFile(string fileName, string contentType)
-		{
-			SendFileData(fileName, contentType, false);
+			if (string.IsNullOrWhiteSpace(contentType))
+				contentType = MapContentType(fileName);
+			return SendFileData(fileName, contentType, false);
 		}
 
 		/// <summary>

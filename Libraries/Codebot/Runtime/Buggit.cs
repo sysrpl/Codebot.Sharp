@@ -1,10 +1,15 @@
 ﻿using System;
+using System.IO;
+
 namespace Codebot
 {
-	public class Buggit
+	public static class Buggit
 	{
-		public Buggit()
+		public static string Location;
+
+		public static void Logs(string s, params object[] args)
 		{
+			File.AppendAllText(Location, String.Format(s, args) + Environment.NewLine);
 		}
 	}
 }

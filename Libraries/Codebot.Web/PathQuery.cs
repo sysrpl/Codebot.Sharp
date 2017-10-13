@@ -1,10 +1,9 @@
 ﻿using System;
 namespace Codebot.Web
 {
-	public class PathQuery
+	public struct PathQuery
 	{
-		public PathQuery()
-		{
-		}
+		public string Path;
+		public string Query;
 	}
 }

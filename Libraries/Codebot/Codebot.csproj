@@ -7,6 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Codebot</RootNamespace>
     <AssemblyName>Codebot</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,6 +67,7 @@
     <Compile Include="Net\CookieWebClient.cs" />
     <Compile Include="Xml\ElementSelect.cs" />
     <Compile Include="Runtime\DateTimeExtensions.cs" />
+    <Compile Include="Runtime\Buggit.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

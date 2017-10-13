@@ -1,8 +1,12 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Web;
+
 namespace Codebot.Web
 {
-	public interface ISecure
+	public interface IUserSecurity
 	{
-		IUser User { get; }
+		HttpContext Context { get; }
+		IBasicUser User { get; }
+		IEnumerable<IBasicUser> Users { get; }
 	}
 }

@@ -1,20 +1,26 @@
 ﻿using System;
-using System.Text;
-using System.Security.Cryptography;
-using System.Web;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
 
 namespace Codebot.Web
 {
-	public static class UserSecurity
+	public static class Security
 	{
-		private static HMACSHA256 hmac;
+		private static string secretKey;
 
-		private static Random random = new Random();
+		private static Random random;
+
+		static Security()
+		{
+			random = new Random();
+			RandomSecretKey(32);
+		}
 
 		public static string RandomSecretKey(int length)
 		{
-			const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+			const string chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 			var secret = new string(Enumerable.Repeat(chars, length)
 			  .Select(s => s[random.Next(s.Length)]).ToArray());
 			SecretKey(secret);
@@ -23,29 +29,36 @@ namespace Codebot.Web
 
 		public static void SecretKey(string key)
 		{
-			var bytes = Encoding.UTF8.GetBytes(key);
-			hmac = new HMACSHA256(bytes);
+			secretKey = key;
 		}
 
 		public static string ComputeHash(string value)
 		{
 			var bytes = Encoding.UTF8.GetBytes(value);
-			bytes = hmac.ComputeHash(bytes);
+			var key = Encoding.UTF8.GetBytes(secretKey);
+			using (var hmac = new HMACSHA256(key))
+				bytes = hmac.ComputeHash(bytes);
 			return Convert.ToBase64String(bytes);
 		}
 
-		private static readonly string key = "security-credentials";
+		private static readonly string cookieName = "security-credentials";
+
+		public static string ReadUserName(HttpContext context)
+		{
+			var s = ReadCredentials(context);
+			return s.Split(':').FirstOrDefault();
+		}
 
 		public static string ReadCredentials(HttpContext context)
 		{
-			HttpCookie cookie = context.Request.Cookies[key];
+			HttpCookie cookie = context.Request.Cookies[cookieName];
 			return cookie != null ? cookie.Value : "";
 		}
 
-		public static void WriteCredentials(HttpContext context, string salt, BasicUser user)
+		public static void WriteCredentials(HttpContext context, IBasicUser user, string salt)
 		{
-			HttpCookie cookie = new HttpCookie(key);
-			string s = user.Credentials(salt);
+			HttpCookie cookie = new HttpCookie(cookieName);
+			string s = Credentials(user, salt);
 			cookie.Value = s;
 			cookie.Expires = DateTime.Now.AddYears(1);
 			context.Response.Cookies.Add(cookie);
@@ -53,29 +66,29 @@ namespace Codebot.Web
 
 		public static void DeleteCredentials(HttpContext context)
 		{
-			if (context.Request.Cookies[key] != null)
+			if (context.Request.Cookies[cookieName] != null)
 			{
-				HttpCookie cookie = new HttpCookie(key);
+				HttpCookie cookie = new HttpCookie(cookieName);
 				cookie.Expires = DateTime.Now.AddDays(-1d);
 				context.Response.Cookies.Add(cookie);
 			}
 		}
 
-		public static string Credentials(IUser user, string salt)
+		public static string Credentials(IBasicUser user, string salt)
 		{
-			return user.Login + "-" + ComputeHash(salt + user.Login) + "-" + user.Hash;
+			return user.Name + ":" + ComputeHash(salt + user.Name + user.Hash);
 		}
 
-		public static bool Match(IUser user, string salt, string credentials)
+		public static bool Match(IBasicUser user, string salt, string credentials)
 		{
 			if (!user.Active)
 				return false;
-			var items = credentials.Split('-');
-			if (items.Length != 3)
+			var items = credentials.Split(':');
+			if (items.Length != 2)
 				return false;
-			if (items[0] != user.Login)
+			if (items[0] != user.Name)
 				return false;
-			return (user.Hash == items[2] && ComputeHash(salt + user.Login) == items[1]);
+			return (items[1] == ComputeHash(salt + user.Name + user.Hash));
 		}
 	}
 }

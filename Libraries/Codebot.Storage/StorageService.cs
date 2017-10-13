@@ -375,7 +375,6 @@ namespace Codebot.Storage
 				uriString.Append(bucketName).Append('/');
 			// EscapeDataString allows keys to have any characters, including "+".
 			uriString.Append(Uri.EscapeDataString(key));
-
 			return uriString.ToString();
 		}
 
@@ -410,6 +409,22 @@ namespace Codebot.Storage
 		#endregion
 
 		#region AddObject and overloads
+		/// <summary>
+		/// Adds an object to Storage by acquiring the upload stream then allowing the given
+		/// function to handle writing data into it.
+		/// </summary>
+		private AddObjectRequest InternalAddObject(string bucketName, string key, long bytes, string contentType,
+			CannedAcl acl)
+		{
+			var request = new AddObjectRequest(this, bucketName, key)
+			{
+				ContentLength = bytes,
+				CannedAcl = acl
+			};
+			if (!String.IsNullOrWhiteSpace(contentType))
+				request.ContentType = contentType;
+			return request;
+		}
 
 		/// <summary>
 		/// Adds an object to Storage by acquiring the upload stream then allowing the given
@@ -423,10 +438,8 @@ namespace Codebot.Storage
 				ContentLength = bytes,
 				CannedAcl = acl
 			};
-
-			if (contentType != null) // if specified
+			if (!String.IsNullOrWhiteSpace(contentType))
 				request.ContentType = contentType;
-
 			request.PerformWithRequestStream(action);
 		}
 
@@ -445,10 +458,11 @@ namespace Codebot.Storage
 		public void AddObject(Stream inputStream, long bytes, string bucketName, string key,
 			string contentType, CannedAcl acl)
 		{
-			AddObject(bucketName, key, bytes, contentType, acl, stream =>
+			var request = InternalAddObject(bucketName, key, bytes, contentType, acl);
+			request.PerformWithRequestStream(stream =>
 			{
 				CopyStream(inputStream, stream, bytes,
-					CreateProgressCallback(bucketName, key, bytes, AddObjectProgress));
+					CreateProgressCallback(request, bucketName, key, bytes, AddObjectProgress));
 				stream.Flush();
 			});
 		}
@@ -517,11 +531,9 @@ namespace Codebot.Storage
 		{
 			AddObjectString(contents, bucketName, key, null, default(CannedAcl));
 		}
-
 		#endregion
 
 		#region CopyObject
-
 		/// <summary>
 		/// Copies an object from one bucket to another with the given canned ACL.
 		/// </summary>
@@ -530,11 +542,11 @@ namespace Codebot.Storage
 		{
 			var request = new CopyObjectRequest(this, sourceBucketName, sourceKey,
 				destBucketName, destKey)
-			{ CannedAcl = acl };
-
+			{ 
+				CannedAcl = acl 
+			};
 			CopyObjectResponse response = request.GetResponse();
 			response.Close();
-
 			if (response.Error != null)
 				throw response.Error;
 		}
@@ -547,10 +559,8 @@ namespace Codebot.Storage
 		{
 			var request = new CopyObjectRequest(this, sourceBucketName, sourceKey,
 				destBucketName, destKey);
-
 			CopyObjectResponse response = request.GetResponse();
 			response.Close();
-
 			if (response.Error != null)
 				throw response.Error;
 		}
@@ -570,11 +580,9 @@ namespace Codebot.Storage
 		{
 			CopyObject(bucketName, sourceKey, bucketName, destKey);
 		}
-
 		#endregion
 
 		#region GetObject and overloads
-
 		/// <summary>
 		/// Gets a data stream for an existing object in Storage. It is your responsibility to close
 		/// the Stream when you are finished.
@@ -663,43 +671,35 @@ namespace Codebot.Storage
 			string contentType;
 			return GetObjectString(bucketName, key, out contentType);
 		}
-
 		#endregion
 
 		#region CopyStream
-
 		static void CopyStream(Stream source, Stream dest, long length, Action<long> progressCallback)
 		{
 			var buffer = new byte[8192];
-
 			if (progressCallback != null)
 				progressCallback(0);
-
 			long totalBytesRead = 0;
 			while (totalBytesRead < length) // reuse this local var
 			{
 				int bytesRead = source.Read(buffer, 0, buffer.Length);
-
 				if (bytesRead > 0)
 					dest.Write(buffer, 0, bytesRead);
 				else
 					throw new Exception("Unexpected end of stream while copying.");
-
 				totalBytesRead += bytesRead;
-
 				if (progressCallback != null)
 					progressCallback(totalBytesRead);
 			}
 		}
 
-		private Action<long> CreateProgressCallback(string bucketName, string key, long length,
+		private Action<long> CreateProgressCallback(StorageRequest request, string bucketName, string key, long length,
 			EventHandler<StorageProgressEventArgs> handler)
 		{
 			return handler != null
-				 ? bytes => handler(this, new StorageProgressEventArgs(bucketName, key, bytes, length))
+				 ? bytes => handler(this, new StorageProgressEventArgs(request, bucketName, key, bytes, length))
 				 : (Action<long>)null;
 		}
-
 		#endregion
 	}
 }

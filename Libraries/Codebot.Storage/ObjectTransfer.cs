@@ -10,6 +10,11 @@ namespace Codebot.Storage
     public class StorageProgressEventArgs : ProgressChangedEventArgs
     {
         /// <summary>
+        /// Gets the request associated with object being transferred.
+        /// </summary>
+		public StorageRequest Request { get; private set; }
+
+        /// <summary>
         /// Gets the bucket of the object being transferred.
         /// </summary>
         public string BucketName { get; private set; }
@@ -29,10 +34,11 @@ namespace Codebot.Storage
         /// </summary>
         public long BytesTotal { get; private set; }
 
-        public StorageProgressEventArgs(string bucketName, string key,
+        public StorageProgressEventArgs(StorageRequest request, string bucketName, string key,
             long bytesTransferred, long bytesTotal)
             : base((int)Math.Round(bytesTransferred * 100.0 / bytesTotal), null)
         {
+			this.Request = request;
             this.BucketName = bucketName;
             this.Key = key;
             this.BytesTransferred = bytesTransferred;

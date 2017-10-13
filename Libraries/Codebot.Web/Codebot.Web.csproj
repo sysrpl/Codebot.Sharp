@@ -7,6 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Codebot.Web</RootNamespace>
     <AssemblyName>Codebot.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,6 +64,11 @@
     <Compile Include="WebCustomException.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Component.cs" />
+    <Compile Include="Security\IBasicUser.cs" />
+    <Compile Include="Security\IUserSecurity.cs" />
+    <Compile Include="Security\BasicUser.cs" />
+    <Compile Include="Security\Security.cs" />
+    <Compile Include="PathQuery.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -70,5 +76,8 @@
       <Project>{7A745D4E-E9D4-4CC9-B0A0-9D272FD388F5}</Project>
       <Name>Codebot</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Security\" />
   </ItemGroup>
 </Project>

@@ -9,7 +9,22 @@ namespace Codebot.Storage
     /// </summary>
     public abstract class StorageRequest
     {
-        string bucketName; // remember this for signing the request later
+        /// <summary>
+        /// Returns true if Abort has been invoked
+        /// </summary>
+		public bool Aborted { get; private set; };
+
+		/// <summary>
+		/// Cancels an asynchronous request to Storage.
+		/// </summary>
+	 	public void Abort()
+		{
+			if (!Aborted)
+				WebRequest.Abort();
+			Aborted = true;
+		}
+
+		string bucketName; // remember this for signing the request later
 
         /// <summary>
         /// Gets the service this request will operate against.
@@ -118,7 +133,6 @@ namespace Codebot.Storage
         {
             get { return WebRequest.ServicePoint; }
         }
-
         #endregion
 
         protected void AuthorizeIfNecessary()
@@ -217,14 +231,6 @@ namespace Codebot.Storage
                 TryThrowStorageException(exception);
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Cancels an asynchronous request to Storage.
-        /// </summary>
-        public void Abort()
-        {
-            WebRequest.Abort();
         }
     }
 }
