@@ -3,3 +3,14 @@ obj
 packages
 tests
 Other
+codebot
+boot
+typings
+.vscode
+.gitignore
+.git
+tsconfig.json
+bootconfig.json
+changes
+LICENSE
+
