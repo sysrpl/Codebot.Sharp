@@ -68,6 +68,9 @@
     <Compile Include="Xml\ElementSelect.cs" />
     <Compile Include="Runtime\DateTimeExtensions.cs" />
     <Compile Include="Runtime\Buggit.cs" />
+    <Compile Include="Runtime\IReader.cs" />
+    <Compile Include="Runtime\IWriter.cs" />
+    <Compile Include="Runtime\EmptyInterface.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

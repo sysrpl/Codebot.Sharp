@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Codebot.Net
 {
@@ -43,57 +44,95 @@ namespace Codebot.Net
 	public delegate void SocketAcceptEventHandler(object sender,
 		SocketAcceptEventArgs e);
 
-	public class ListenerSocket
+	public class ListenerSocket : IDisposable
 	{
-		private int port;
-		private Socket socket;
-		private ISynchronizeInvoke invoke;
+		int port;
+		Socket socket;
+		ISynchronizeInvoke invoke;
 
-		private void Invoke(Delegate d, params object[] args)
+		void Invoke(Delegate d, params object[] args)
 		{
 			if (invoke != null)
-			{
 				invoke.Invoke(d, args);
-			}
 			else
-			{
 				d.DynamicInvoke(args);
-			}
 		}
 
-		private void AcceptCallback(IAsyncResult ar)
+		void TaskAccept()
 		{
+			if (socket == null)
+				return;
+			Task.Run(() =>
+			{
+				try
+				{
+					var client = socket.Accept();
+					if (client == null)
+					{
+						Disconnect();
+						return;
+					}
+					TaskAccept();
+					if (Accept != null)
+					{
+						var e = new SocketAcceptEventArgs(client);
+						Invoke(Accept, this, e);
+					}
+				}
+				catch
+				{
+					Disconnect();
+				}
+			});
+		}
+
+		public ListenerSocket(int port = 0, ISynchronizeInvoke invoke = null)
+		{
+			this.port = port;
+            this.invoke = invoke;
+			this.socket = null;
+		}
+
+		public void Dispose()
+		{
+			Disconnect();
+		}
+
+		public void Listen(int port)
+		{
+			Disconnect();
+			this.port = port;
+			IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, this.port);
+			socket = Network.CreateSocket();
 			try
 			{
-				Socket client = socket.EndAccept(ar);
-				OnAccept(new SocketAcceptEventArgs(client));
-				socket.BeginAccept(AcceptCallback, null);
+				socket.Bind(endPoint);
+				socket.Listen(10);
+				TaskAccept();
 			}
 			catch
 			{
-				Socket server = socket;
-				socket = null;
-				server.Close();
+				Disconnect();
 			}
 		}
 
-		protected void OnAccept(SocketAcceptEventArgs e)
+		public void Listen()
 		{
-			if (Accept != null)
+			Listen(port);
+		}
+
+		public void Disconnect()
+		{
+			lock (this)
 			{
-				Invoke(Accept, this, e);
+				if (socket != null)
+				{
+					var server = socket;
+					socket = null;
+					server.Close();
+					server.Dispose();
+				}
 			}
-		}
-
-		public ListenerSocket(int port)
-		{
-			this.port = port;
-		}
-
-		public ListenerSocket(int port, ISynchronizeInvoke invoke)
-			: this(port)
-		{
-			this.invoke = invoke;
 		}
 
 		public bool Active
@@ -107,19 +146,8 @@ namespace Codebot.Net
 			{
 				if (value != Active)
 				{
-					if (value)
-					{
-						IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, port);
-						socket = Network.CreateSocket();
-						socket.Bind(endPoint);
-						socket.Listen(10);
-						socket.BeginAccept(AcceptCallback, null);
-					}
-					else
-					{
-						socket.Close();
-						socket = null;
-					}
+					var action = value ? (Action)Listen : Disconnect;
+					action();
 				}
 			}
 		}
@@ -190,18 +218,24 @@ namespace Codebot.Net
 	public delegate void SocketStateChangeEventHandler(object sender,
 		SocketStateChangeEventArgs e);
 
-	public class ClientSocket
+	public class ClientSocket : IDisposable
 	{
 		#region internals
-		private byte[] buffer;
-		private int size;
-		private ISynchronizeInvoke invoke;
-		private string hostName;
-		private int port;
-		private Socket socket;
-		private delegate IPHostEntry Resolve(string hostName);
+		byte[] buffer;
+		int size;
+		ISynchronizeInvoke invoke;
+		IPAddress address;
+		string hostName;
+		int port;
+		Socket socket;
+		delegate IPHostEntry Resolve(string name);
 
-		private void Invoke(Delegate d, params object[] args)
+		public void Dispose()
+		{
+			Disconnect();
+		}
+
+		void Invoke(Delegate d, params object[] args)
 		{
 			if (invoke != null)
 			{
@@ -213,7 +247,7 @@ namespace Codebot.Net
 			}
 		}
 
-		private void ConnectCallback(IAsyncResult ar)
+		void ConnectCallback(IAsyncResult ar)
 		{
 			try
 			{
@@ -228,7 +262,7 @@ namespace Codebot.Net
 			}
 		}
 
-		private void ResolveCallback(IAsyncResult ar)
+		void ResolveCallback(IAsyncResult ar)
 		{
 			Resolve resolve = (Resolve)ar.AsyncState;
 			try
@@ -245,7 +279,7 @@ namespace Codebot.Net
 			}
 		}
 
-		private void ReceiveCallback(IAsyncResult ar)
+		void ReceiveCallback(IAsyncResult ar)
 		{
 			try
 			{
@@ -265,7 +299,7 @@ namespace Codebot.Net
 			}
 		}
 
-		private void SendCallback(IAsyncResult ia)
+		void SendCallback(IAsyncResult ia)
 		{
 			try
 			{
@@ -306,30 +340,29 @@ namespace Codebot.Net
 
 		protected void OnError(SocketErrorEventArgs e)
 		{
-			if (Error != null)
+			try
 			{
-				try
-				{
+				if (Error != null)
 					Invoke(Error, this, e);
-				}
-				finally
-				{
-					Disconnect();
-				}
+			}
+			finally
+			{
+				Disconnect();
 			}
 		}
 		#endregion
 
-		public ClientSocket(int bufferSize)
+		public ClientSocket(int bufferSize = 4096, ISynchronizeInvoke invoke = null)
 		{
-			this.size = bufferSize;
+			size = bufferSize;
 			buffer = new byte[bufferSize];
+            this.invoke = invoke;
 		}
 
-		public ClientSocket(int bufferSize, ISynchronizeInvoke invoke)
-			: this(bufferSize)
+		public ClientSocket(Socket socket, int bufferSize = 4096, ISynchronizeInvoke invoke = null)
+			: this(bufferSize, invoke)
 		{
-			this.invoke = invoke;
+			Connect(socket);
 		}
 
 		#region methods
@@ -349,14 +382,32 @@ namespace Codebot.Net
 				ReceiveCallback, null);
 		}
 
-		public void Connect(string hostName, int port)
+		void ConnectHost()
 		{
-			Disconnect();
-			this.hostName = hostName;
-			this.port = port;
 			UpdateState(SocketState.Resolving);
 			Resolve resolve = Dns.GetHostEntry;
 			resolve.BeginInvoke(hostName, ResolveCallback, resolve);
+		}
+
+		void ConnectAddress()
+		{
+			UpdateState(SocketState.Connecting);
+			IPEndPoint endPoint = new IPEndPoint(address, port);
+			socket = Network.CreateSocket();
+			socket.BeginConnect(endPoint, ConnectCallback, null);
+		}
+
+		public void Connect(string hostName, int port)
+		{
+			Disconnect();
+			if (String.IsNullOrWhiteSpace(hostName))
+				return;
+			this.hostName = hostName;
+			this.port = port;
+			if (IPAddress.TryParse(this.hostName, out address))
+				ConnectAddress();
+			else
+				ConnectHost();
 		}
 
 		public void Connect()
@@ -366,12 +417,13 @@ namespace Codebot.Net
 
 		public void Disconnect()
 		{
-			if (State > SocketState.Disconnected)
+			if (State != SocketState.Disconnected)
 			{
 				if (socket != null)
 				{
 					socket.Shutdown(SocketShutdown.Both);
 					socket.Close();
+					socket.Dispose();
 					socket = null;
 				}
 				UpdateState(SocketState.Disconnected);
@@ -406,14 +458,8 @@ namespace Codebot.Net
 			{
 				if (value != Active)
 				{
-					if (value)
-					{
-						Connect();
-					}
-					else
-					{
-						Disconnect();
-					}
+					var action = (value) ? (Action)Connect : Disconnect;
+					action();
 				}
 			}
 		}

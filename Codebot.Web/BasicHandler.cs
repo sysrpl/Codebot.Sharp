@@ -187,6 +187,19 @@ namespace Codebot.Web
 			return Converter.TryConvert<string, T>(value, out result);
 		}
 
+		public static string ReadSetting(string name)
+		{
+			var config = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
+			if (config.AppSettings.Settings.Count > 0)
+			{
+				var setting = config.AppSettings.Settings[name];
+				if (setting != null)
+					return setting.Value;
+
+			}
+			return "";
+		}
+
 		public void DeleteCookie(string key)
 		{
 			if (Context.Request.Cookies[key] != null)

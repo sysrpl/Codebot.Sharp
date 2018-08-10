@@ -69,6 +69,9 @@
     <Compile Include="Security\BasicUser.cs" />
     <Compile Include="Security\Security.cs" />
     <Compile Include="PathQuery.cs" />
+    <Compile Include="Security\BasicApplication.cs" />
+    <Compile Include="Security\NameCheck.cs" />
+    <Compile Include="Security\BasicPageHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

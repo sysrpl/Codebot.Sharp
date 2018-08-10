@@ -4,7 +4,7 @@ using Codebot.Runtime;
 
 namespace Codebot.Xml
 {
-	public abstract class Filer : Wrapper
+	public abstract class Filer : Wrapper, IReader, IWriter, IFiler
 	{
 		internal Filer(XmlNode node)
 			: base(node)
@@ -28,7 +28,7 @@ namespace Codebot.Xml
 			throw new ArgumentException();
 		}
 
-		public T Read<T>(string name, T value, bool stored)
+		public T Read<T>(string name, T value = default(T), bool stored = true)
 		{
 			T result;
 			bool parsed = Converter.TryConvert(ReadValue(name, stored), out result);
@@ -38,16 +38,6 @@ namespace Codebot.Xml
 				else
 					WriteValue(name,  value.ToString());
 			return parsed ? result : value;
-		}
-
-		public T Read<T>(string name, T value)
-		{
-			return Read<T>(name, value, true);
-		}
-
-		public T Read<T>(string name)
-		{
-			return Read<T>(name, default(T), true);
 		}
 
 		public void Write(string name, object value)
@@ -65,25 +55,15 @@ namespace Codebot.Xml
 			return values;
 		}
 
-		public DateTime ReadDate(string name, DateTime value, bool stored)
+		public DateTime ReadDate(string name, DateTime value = default(DateTime), bool stored = true)
 		{
 			DateTime result;
 			if (!DateTime.TryParse(ReadValue(name, stored), out result))
 			{
-				result = value;
+				result = value == default(DateTime) ? DateTime.Now : value;
 				if (stored) WriteValue(name, result.ToString());
 			}
 			return result;
-		}
-
-		public DateTime ReadDate(string name, DateTime value)
-		{
-			return ReadDate(name, value, true);
-		}
-
-		public DateTime ReadDate(string name)
-		{
-			return ReadDate(name, DateTime.Now, true);
 		}
 
 		public void WriteDate(string name, DateTime value)
@@ -91,7 +71,7 @@ namespace Codebot.Xml
 			WriteValue(name, value.ToString());
 		}
 
-		public int ReadInt(string name, int value, bool stored)
+		public int ReadInt(string name, int value = 0, bool stored = true)
 		{
 			int result;
 			bool parsed = int.TryParse(ReadValue(name, value.ToString(), stored), out result);
@@ -103,22 +83,12 @@ namespace Codebot.Xml
 			return result;
 		}
 
-		public int ReadInt(string name, int value)
-		{
-			return ReadInt(name, value, true);
-		}
-
-		public int ReadInt(string name)
-		{
-			return ReadInt(name, 0, true);
-		}
-
 		public void WriteInt(string name, int value)
 		{
 			WriteValue(name, value.ToString());
 		}
 
-        public long ReadLong(string name, long value, bool stored)
+		public long ReadLong(string name, long value = 0, bool stored = true)
         {
             long result;
             bool parsed = long.TryParse(ReadValue(name, value.ToString(), stored), out result);
@@ -130,36 +100,16 @@ namespace Codebot.Xml
             return result;
         }
 
-        public long ReadLong(string name, long value)
-        {
-            return ReadLong(name, value, true);
-        }
-
-        public long ReadLong(string name)
-        {
-            return ReadLong(name, 0, true);
-        }
-
         public void WriteLong(string name, long value)
         {
             WriteValue(name, value.ToString());
         }
 
-		public string ReadString(string name, string value, bool stored)
+		public string ReadString(string name, string value = "", bool stored = true)
 		{
 			string result = ReadValue(name, value, stored);
 			if (result.Length == 0) result = value;
 			return result;
-		}
-
-		public string ReadString(string name, string value)
-		{
-			return ReadString(name, value, true);
-		}
-
-		public string ReadString(string name)
-		{
-			return ReadString(name, string.Empty, true);
 		}
 
 		public void WriteString(string name, string value)
@@ -167,7 +117,7 @@ namespace Codebot.Xml
 			WriteValue(name, value);
 		}
 
-		public bool ReadBool(string name, bool value, bool stored)
+		public bool ReadBool(string name, bool value = false, bool stored = true)
 		{
 			string s = ReadValue(name, stored).ToUpper();
 			bool result;
@@ -193,16 +143,6 @@ namespace Codebot.Xml
 			}
 			if (stored) WriteValue(name, result ? "Y" : "N");
 			return result;
-		}
-
-		public bool ReadBool(string name, bool value)
-		{
-			return ReadBool(name, value, true);
-		}
-
-		public bool ReadBool(string name)
-		{
-			return ReadBool(name, false, true);
 		}
 
 		public void WriteBool(string name, bool value)

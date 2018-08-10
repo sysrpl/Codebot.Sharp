@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{69797C63-7E27-49D4-8DAD-12A3573B3570}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Codebot.Bass</RootNamespace>
+    <AssemblyName>Codebot.Bass</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <Commandlineparameters></Commandlineparameters>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Bass\Delegates\DSPProcedure.cs" />
+    <Compile Include="Bass\Delegates\DownloadProcedure.cs" />
+    <Compile Include="Bass\Delegates\FileCloseProcedure.cs" />
+    <Compile Include="Bass\Delegates\FileLengthProcedure.cs" />
+    <Compile Include="Bass\Delegates\FileReadProcedure.cs" />
+    <Compile Include="Bass\Delegates\FileSeekProcedure.cs" />
+    <Compile Include="Bass\Delegates\RecordProcedure.cs" />
+    <Compile Include="Bass\Delegates\StreamProcedure.cs" />
+    <Compile Include="Bass\Delegates\SyncProcedure.cs" />
+    <Compile Include="Bass\Enumerations\Algorithm3D.cs" />
+    <Compile Include="Bass\Enumerations\BassFlags.cs" />
+    <Compile Include="Bass\Enumerations\BassInfoFlags.cs" />
+    <Compile Include="Bass\Enumerations\ChannelAttribute.cs" />
+    <Compile Include="Bass\Enumerations\ChannelType.cs" />
+    <Compile Include="Bass\Enumerations\Configuration.cs" />
+    <Compile Include="Bass\Enumerations\DSInterface.cs" />
+    <Compile Include="Bass\Enumerations\DXPhase.cs" />
+    <Compile Include="Bass\Enumerations\DXWaveform.cs" />
+    <Compile Include="Bass\Enumerations\DataFlags.cs" />
+    <Compile Include="Bass\Enumerations\DeviceInfoFlags.cs" />
+    <Compile Include="Bass\Enumerations\DeviceInitFlags.cs" />
+    <Compile Include="Bass\Enumerations\DeviceType.cs" />
+    <Compile Include="Bass\Enumerations\EAXEnvironment.cs" />
+    <Compile Include="Bass\Enumerations\EffectType.cs" />
+    <Compile Include="Bass\Enumerations\FXChannelFlags.cs" />
+    <Compile Include="Bass\Enumerations\FileStreamPosition.cs" />
+    <Compile Include="Bass\Enumerations\InputFlags.cs" />
+    <Compile Include="Bass\Enumerations\InputTypeFlags.cs" />
+    <Compile Include="Bass\Enumerations\LevelRetrievalFlags.cs" />
+    <Compile Include="Bass\Enumerations\Mode3D.cs" />
+    <Compile Include="Bass\Enumerations\PlaybackState.cs" />
+    <Compile Include="Bass\Enumerations\PositionFlags.cs" />
+    <Compile Include="Bass\Enumerations\RecordFormatFlags.cs" />
+    <Compile Include="Bass\Enumerations\RecordInfoFlags.cs" />
+    <Compile Include="Bass\Enumerations\StreamProcedureType.cs" />
+    <Compile Include="Bass\Enumerations\StreamSystem.cs" />
+    <Compile Include="Bass\Enumerations\SyncFlags.cs" />
+    <Compile Include="Bass\Enumerations\TagType.cs" />
+    <Compile Include="Bass\Enumerations\VAMMode.cs" />
+    <Compile Include="Bass\Enumerations\WaveFormatTag.cs" />
+    <Compile Include="Bass\PInvoke\3D.cs" />
+    <Compile Include="Bass\PInvoke\Bass.cs" />
+    <Compile Include="Bass\PInvoke\Channels.cs" />
+    <Compile Include="Bass\PInvoke\Config.cs" />
+    <Compile Include="Bass\PInvoke\CreateStream.cs" />
+    <Compile Include="Bass\PInvoke\Devices.cs" />
+    <Compile Include="Bass\PInvoke\FX.cs" />
+    <Compile Include="Bass\PInvoke\Music.cs" />
+    <Compile Include="Bass\PInvoke\Plugin.cs" />
+    <Compile Include="Bass\PInvoke\Record.cs" />
+    <Compile Include="Bass\PInvoke\Samples.cs" />
+    <Compile Include="Bass\PInvoke\Streams.cs" />
+    <Compile Include="Bass\Structures\BassInfo.cs" />
+    <Compile Include="Bass\Structures\ChannelInfo.cs" />
+    <Compile Include="Bass\Structures\DeviceInfo.cs" />
+    <Compile Include="Bass\Structures\FileProcedures.cs" />
+    <Compile Include="Bass\Structures\PluginFormat.cs" />
+    <Compile Include="Bass\Structures\PluginInfo.cs" />
+    <Compile Include="Bass\Structures\RecordInfo.cs" />
+    <Compile Include="Bass\Structures\SampleInfo.cs" />
+    <Compile Include="Bass\Structures\Vector3D.cs" />
+    <Compile Include="Effects\Objects\DXChorusEffect.cs" />
+    <Compile Include="Effects\Objects\DXCompressorEffect.cs" />
+    <Compile Include="Effects\Objects\DXDistortionEffect.cs" />
+    <Compile Include="Effects\Objects\DXEchoEffect.cs" />
+    <Compile Include="Effects\Objects\DXFlangerEffect.cs" />
+    <Compile Include="Effects\Objects\DXGargleEffect.cs" />
+    <Compile Include="Effects\Objects\DXParamEQ.cs" />
+    <Compile Include="Effects\Objects\DXParamEQEffect.cs" />
+    <Compile Include="Effects\Objects\DXReverbEffect.cs" />
+    <Compile Include="Effects\Objects\DX_ID3DL2ReverbEffect.cs" />
+    <Compile Include="Effects\Objects\Effect Base.cs" />
+    <Compile Include="Effects\Structures\DXChorusParameters.cs" />
+    <Compile Include="Effects\Structures\DXCompressorParameters.cs" />
+    <Compile Include="Effects\Structures\DXDistortionParameters.cs" />
+    <Compile Include="Effects\Structures\DXEchoParameters.cs" />
+    <Compile Include="Effects\Structures\DXFlangerParameters.cs" />
+    <Compile Include="Effects\Structures\DXGargleParameters.cs" />
+    <Compile Include="Effects\Structures\DXParamEQParameters.cs" />
+    <Compile Include="Effects\Structures\DXReverbParameters.cs" />
+    <Compile Include="Effects\Structures\DX_ID3DL2ReverbParameters.cs" />
+    <Compile Include="Tags\Objects\LookupTables.cs" />
+    <Compile Include="Tags\Objects\TagProperties.cs" />
+    <Compile Include="Tags\Objects\TagReader.cs" />
+    <Compile Include="Tags\Objects\ID3v2\ID3v2Tag.cs" />
+    <Compile Include="Tags\Objects\ID3v2\PictureTag.cs" />
+    <Compile Include="Tags\Objects\ID3v2\PictureTypes.cs" />
+    <Compile Include="Tags\Structures\BextTag.cs" />
+    <Compile Include="Tags\Structures\CACodecTag.cs" />
+    <Compile Include="Tags\Structures\CartTag.cs" />
+    <Compile Include="Tags\Structures\ID3v1Tag.cs" />
+    <Compile Include="BassException.cs" />
+    <Compile Include="BitHelper.cs" />
+    <Compile Include="ChannelReferences.cs" />
+    <Compile Include="Errors.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="GCPin.cs" />
+    <Compile Include="IEffectParameter.cs" />
+    <Compile Include="MediaPlayer.cs" />
+    <Compile Include="Resolution.cs" />
+    <Compile Include="StreamFileProcedures.cs" />
+    <Compile Include="WaveFileWriter.cs" />
+    <Compile Include="WaveFormat.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

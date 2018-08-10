@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 
 namespace Codebot.Web
 {
@@ -10,7 +12,20 @@ namespace Codebot.Web
 
 		protected delegate IBasicUser AnonymousFactory();
 
-		protected static AnonymousFactory CreateAnonymous;
+		private static AnonymousFactory createAnonymous;
+
+		protected static AnonymousFactory CreateAnonymous
+		{
+			get
+			{
+				return createAnonymous;
+			}
+			set
+			{
+				if (createAnonymous == null)
+					createAnonymous = value;
+			}
+		}
 
 		public static IBasicUser Anonymous 
 		{ 
@@ -22,21 +37,41 @@ namespace Codebot.Web
 			}
 		}
 
-		static BasicUser()
+		public static bool Init()
 		{
 			CreateAnonymous = () => new BasicUser(false, "Anonymous", string.Empty);
+			return Anonymous is BasicUser;
 		}
 
-		public BasicUser(bool active, string name, string hash)
+		private List<string> roleList;
+		private string roles;
+
+		public BasicUser(bool active, string name, string hash, string roles = "")
 		{
 			Active = active;
+			Data = null;
 			Name = name;
 			Hash = hash;
+			Roles = String.IsNullOrWhiteSpace(roles) ? "" : Regex.Replace(roles, @"\s+", "");
+			roleList = Roles.Split(',').ToList();
 		}
 
-		public bool Active { get; private set; }
+		public bool Active { get; set; }
+		public object Data { get; set; }
 		public string Name { get; private set; }
 		public string Hash { get; private set; }
+
+		public string Roles
+		{ 
+			get
+			{
+				return roles;
+			}
+			set
+			{
+				roles = String.IsNullOrWhiteSpace(value) ? "" : Regex.Replace(value, @"\s+", "").ToLower();
+			}
+		}
 
 		public bool Login(IUserSecurity security, string name, string password, string salt)
 		{
@@ -76,7 +111,7 @@ namespace Codebot.Web
 
 		public virtual bool IsInRole(string role)
 		{
-			return false;
+			return roleList.IndexOf(role.ToLower()) > -1;
 		}
 
 		public bool IsAdmin { get { return IsInRole("admin"); } }
