@@ -409,10 +409,16 @@ namespace Codebot.Web
 		/// </summary>
 		public string ReverseMapPath(string path)
 		{
+			path = path.Replace("\\", "/");
 			string s = MapPath("~");
-			s = path.Replace(s, "").Replace("\\", "/");
-			if (s.Length == 0 || s[0] != '/')
-				s = "/" + s;
+			s = s.Replace("\\", "/");
+			if (s.EndsWith("/"))
+				s = s.Substring(0, s.Length - 1);
+			s = path.Replace(s, "");
+			if (s.Length == 0)
+				return "/";
+			if (s[0] != '/')
+				return "/" + s;
 			return s;
 		}
 
