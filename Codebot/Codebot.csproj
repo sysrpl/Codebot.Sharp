@@ -7,7 +7,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Codebot</RootNamespace>
     <AssemblyName>Codebot</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <UseMSBuildEngine>false</UseMSBuildEngine>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,6 +72,7 @@
     <Compile Include="Runtime\IReader.cs" />
     <Compile Include="Runtime\IWriter.cs" />
     <Compile Include="Runtime\EmptyInterface.cs" />
+    <Compile Include="Runtime\StoredAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -15,18 +15,25 @@ namespace Codebot.Web
         {
         }
 
+		private bool InvokePageType<T>()  where T : PageTypeAttribute
+		{
+			var pageType = GetType().GetCustomAttribute<T>(true);
+			if (pageType != null)
+			{
+				ContentType = pageType.ContentType;
+				Include(pageType.FileName, pageType.IsTemplate);
+				return true;
+			}
+			return false;
+		}
+
         private void InvokeDefaultPage()
         {
-            var page = GetType().GetCustomAttribute<DefaultPageAttribute>(true);
-            if (page != null)
-            {
-                var logged = GetType().GetCustomAttribute<LoggedAttribute>(true);
-                if (logged != null)
-                    Log.Add(this);
-                ContentType = page.ContentType;
-                Include(page.FileName, page.IsTemplate);
-                return;
-            }
+			var logged = GetType().GetCustomAttribute<LoggedAttribute>(true);
+            if (logged != null)
+            	Log.Add(this);
+			if ((!IsAuthenticated && InvokePageType<LoginPageAttribute>()) || InvokePageType<DefaultPageAttribute>())
+				return;
             EmptyPage();
         }
 

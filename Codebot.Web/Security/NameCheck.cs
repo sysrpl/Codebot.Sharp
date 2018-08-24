@@ -10,6 +10,11 @@ namespace Codebot.Web
 		{
 			if (userName == null)
 				return false;
+			userName = userName.ToLower();
+			if (userName == "anonymous")
+				return false;
+			if (userName.StartsWith("admin"))
+				return false;
 			var length = userName.Length;
 			if (length < 5 || length > 32)
 				return false;

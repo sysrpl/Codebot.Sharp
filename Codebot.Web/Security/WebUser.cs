@@ -6,77 +6,57 @@ using System.Text.RegularExpressions;
 
 namespace Codebot.Web
 {
-	public class BasicUser : IBasicUser, IPrincipal, IIdentity
+	public class WebUser : IWebUser, IPrincipal, IIdentity
 	{
-		private static IBasicUser anonymous;
+		private static IWebUser anonymous;
 
-		protected delegate IBasicUser AnonymousFactory();
-
-		private static AnonymousFactory createAnonymous;
-
-		protected static AnonymousFactory CreateAnonymous
-		{
-			get
-			{
-				return createAnonymous;
-			}
-			set
-			{
-				if (createAnonymous == null)
-					createAnonymous = value;
-			}
-		}
-
-		public static IBasicUser Anonymous 
+		public static IWebUser Anonymous 
 		{ 
 			get
 			{
-				if (anonymous == null)
-					anonymous = CreateAnonymous();
 				return anonymous;
+			}
+			set
+			{
+				if (anonymous == null)
+					anonymous = value;
 			}
 		}
 
-		public static bool Init()
-		{
-			CreateAnonymous = () => new BasicUser(false, "Anonymous", string.Empty);
-			return Anonymous is BasicUser;
-		}
+		private List<string> roles;
 
-		private List<string> roleList;
-		private string roles;
-
-		public BasicUser(bool active, string name, string hash, string roles = "")
+		public WebUser()
 		{
-			Active = active;
+			Active = true;
 			Data = null;
-			Name = name;
-			Hash = hash;
-			Roles = String.IsNullOrWhiteSpace(roles) ? "" : Regex.Replace(roles, @"\s+", "");
-			roleList = Roles.Split(',').ToList();
+			Name = String.Empty;
+			Hash = String.Empty;
+			roles = new List<string>();
 		}
 
 		public bool Active { get; set; }
 		public object Data { get; set; }
-		public string Name { get; private set; }
-		public string Hash { get; private set; }
+		public string Name { get; set; }
+		public string Hash { get; set; }
 
 		public string Roles
 		{ 
 			get
 			{
-				return roles;
+				return String.Join(",", roles);
 			}
 			set
 			{
-				roles = String.IsNullOrWhiteSpace(value) ? "" : Regex.Replace(value, @"\s+", "").ToLower();
+				var values = String.IsNullOrWhiteSpace(value) ? "" : Regex.Replace(value, @"\s+", "").ToLower();
+				roles.Clear();
+				roles.AddRange(values.Split(','));
 			}
 		}
 
 		public bool Login(IUserSecurity security, string name, string password, string salt)
 		{
-			IBasicUser user;
-			lock (Anonymous) 
+			IWebUser user;
+			lock (Anonymous)
 				user = security.Users.FirstOrDefault(u => u.Name == name);
 			if (user == null)
 			{
@@ -97,9 +77,9 @@ namespace Codebot.Web
 			Security.DeleteCredentials(security.Context);
 		}
 
-		public IBasicUser Restore(IUserSecurity security, string salt)
+		public IWebUser Restore(IUserSecurity security, string salt)
 		{
-			IBasicUser user = null;
+			IWebUser user = null;
 			var name = Security.ReadUserName(security.Context);
 			var credentials = Security.ReadCredentials(security.Context);
 			lock (Anonymous)
@@ -111,7 +91,7 @@ namespace Codebot.Web
 
 		public virtual bool IsInRole(string role)
 		{
-			return roleList.IndexOf(role.ToLower()) > -1;
+			return roles.IndexOf(role.ToLower()) > -1;
 		}
 
 		public bool IsAdmin { get { return IsInRole("admin"); } }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -41,7 +41,7 @@ namespace Codebot.Web
 			return Convert.ToBase64String(bytes);
 		}
 
-		private static readonly string cookieName = "security-credentials";
+		private const string cookieName = "security-credentials";
 
 		public static string ReadUserName(HttpContext context)
 		{
@@ -55,7 +55,7 @@ namespace Codebot.Web
 			return cookie != null ? cookie.Value : "";
 		}
 
-		public static void WriteCredentials(HttpContext context, IBasicUser user, string salt)
+		public static void WriteCredentials(HttpContext context, IWebUser user, string salt)
 		{
 			HttpCookie cookie = new HttpCookie(cookieName);
 			string s = Credentials(user, salt);
@@ -74,12 +74,12 @@ namespace Codebot.Web
 			}
 		}
 
-		public static string Credentials(IBasicUser user, string salt)
+		public static string Credentials(IWebUser user, string salt)
 		{
 			return user.Name + ":" + ComputeHash(salt + user.Name + user.Hash);
 		}
 
-		public static bool Match(IBasicUser user, string salt, string credentials)
+		public static bool Match(IWebUser user, string salt, string credentials)
 		{
 			if (!user.Active)
 				return false;

@@ -7,7 +7,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Codebot.Web</RootNamespace>
     <AssemblyName>Codebot.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <UseMSBuildEngine>false</UseMSBuildEngine>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,14 +65,18 @@
     <Compile Include="WebCustomException.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Component.cs" />
-    <Compile Include="Security\IBasicUser.cs" />
+    <Compile Include="Security\IWebUser.cs" />
     <Compile Include="Security\IUserSecurity.cs" />
-    <Compile Include="Security\BasicUser.cs" />
+    <Compile Include="Security\WebUser.cs" />
     <Compile Include="Security\Security.cs" />
     <Compile Include="PathQuery.cs" />
-    <Compile Include="Security\BasicApplication.cs" />
+    <Compile Include="Security\WebApplication.cs" />
     <Compile Include="Security\NameCheck.cs" />
-    <Compile Include="Security\BasicPageHandler.cs" />
+    <Compile Include="Security\WebPageHandler.cs" />
+    <Compile Include="Security\BasicWebPage.cs" />
+    <Compile Include="Security\BasicWebApplication.cs" />
+    <Compile Include="LoginPageAttribute.cs" />
+    <Compile Include="PageTypeAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

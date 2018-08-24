@@ -8,6 +8,7 @@ namespace Codebot.Web
     public class BasicWebLog
     {
         public static BasicWebLog DefaultLog = new BasicWebLog();
+		private static Object locker = new Object();
 
         private List<BasicWebLogInfo> data;
 
@@ -19,7 +20,7 @@ namespace Codebot.Web
 
         public void Reset()
         {
-            lock (this)
+            lock (locker)
                 data.Clear();
             data.Capacity = 1001;
         }
@@ -27,7 +28,7 @@ namespace Codebot.Web
         public void Add(BasicHandler handler)
         {
             var info = new BasicWebLogInfo(handler);
-            lock (this)
+            lock (locker)
             {
                 if (data.Count > 1000)
                     data.RemoveRange(0, 500);
@@ -39,7 +40,7 @@ namespace Codebot.Web
         public List<BasicWebLogInfo> Dump()
         {
             IEnumerable<BasicWebLogInfo> query;
-            lock (this)
+            lock (locker)
                 query = data.Select(item => item.Clone());
             return query.Reverse().Take(500).ToList();
         }

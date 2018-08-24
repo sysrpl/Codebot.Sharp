@@ -123,14 +123,24 @@ namespace Codebot.Web
 		}
 
 		/// <summary>
-		/// Returns true if the request comes from a local network address
+		/// Returns true if the user is an administrator
 		/// </summary>
-		public bool IsAdmin
+		public virtual bool IsAdmin
 		{
 			get
 			{
-				var address = Request.UserHostAddress;
-				return address.Equals("127.0.0.1") || address.StartsWith("192.168.0.") || address.StartsWith("192.168.1.");
+				return IsLocal;
+			}
+		}
+
+		/// <summary>
+		/// Returns true if a scheme to authenticate has detected a user
+		/// </summary>
+		public virtual bool IsAuthenticated
+		{ 
+			get 
+			{ 
+				return IsLocal;
 			}
 		}
 
@@ -338,6 +348,19 @@ namespace Codebot.Web
 			T result;
 			TryRead(key, out result, defaultValue);
 			return result;
+		}
+
+		/// <summary>
+		/// Reads a the first value from request or return empty string if none exists
+		/// </summary>
+		public string ReadAny(params string[] keys)
+		{
+			string result = String.Empty;
+			foreach (var key in keys)
+				if (TryRead(key, out result))
+					return result;	
+
+			return String.Empty;
 		}
 
 		/// <summary>

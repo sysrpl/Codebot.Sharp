@@ -40,7 +40,7 @@ namespace Codebot.Xml
 			return parsed ? result : value;
 		}
 
-		public void Write(string name, object value)
+		public void Write<T>(string name, T value)
 		{
 			WriteValue(name, value.ToString());
 		}

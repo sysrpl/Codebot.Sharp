@@ -137,7 +137,7 @@ namespace Codebot.Runtime
 
 		public static string Save(this string s, string fileName)
 		{
-			using (var stream = new StreamWriter(fileName))
+			using (var stream = new StreamWriter(fileName, false))
 				stream.Write(s);
 			return s;
 		}

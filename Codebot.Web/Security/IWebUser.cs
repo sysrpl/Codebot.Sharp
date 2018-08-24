@@ -3,7 +3,7 @@ using System.Web;
 
 namespace Codebot.Web
 {
-	public interface IBasicUser : IPrincipal
+	public interface IWebUser : IPrincipal
 	{
 		bool Active { get; }
 		string Name { get; }
@@ -12,6 +12,6 @@ namespace Codebot.Web
 		bool IsAnonymous { get; }
 		bool Login(IUserSecurity security, string name, string password, string salt);
 		void Logout(IUserSecurity security);
-		IBasicUser Restore(IUserSecurity security, string salt);
+		IWebUser Restore(IUserSecurity security, string salt);
 	}
 }
