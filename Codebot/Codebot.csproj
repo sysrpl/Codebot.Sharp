@@ -73,6 +73,7 @@
     <Compile Include="Runtime\IWriter.cs" />
     <Compile Include="Runtime\EmptyInterface.cs" />
     <Compile Include="Runtime\StoredAttribute.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

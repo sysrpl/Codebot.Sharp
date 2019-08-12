@@ -155,10 +155,15 @@ namespace Codebot.Data
                 return (T)dataReader[column];
         }
 
-        public static IEnumerable<T> Compose<T>(this DbDataReader reader, Func<DbDataReader, T> selector)
+        static IEnumerable<T> ComposeDirect<T>(this DbDataReader reader, Func<DbDataReader, T> composer)
         {
             while (reader.Read())
-                yield return selector(reader);
+                yield return composer(reader);
+        }
+
+        public static IEnumerable<T> Compose<T>(this DbDataReader reader, Func<DbDataReader, T> composer)
+        {
+            return reader.ComposeDirect(composer).ToList();
         }
     }
 }

@@ -28,14 +28,17 @@ namespace Codebot.Data
                 return;
             DataConnect.ConnectionString = source;
             var columns = new List<string>();
-            using (var reader = DataCommand.Prepare("select top 1 * from " + tableName).ExecuteReader())
+            DataCommand.Prepare("select top 1 * from " + tableName).ExecuteReader(reader =>
+            {
                 for (int i = 0; i < reader.FieldCount; i++)
                     columns.Add(reader.GetName(i));
+            });
             string selectSql = String.Format("select {0} from {1} where {2} > {3} order by {2}", 
                 String.Join(", ", columns), tableName, keyName, keyId);
             string insertSql = String.Format("insert into {0} ({1}) values (@{2})", 
                 tableName, String.Join(", ", columns), String.Join(", @", columns));
-            using (var reader = DataCommand.Prepare(selectSql).ExecuteReader())
+            var k = keyId;
+            DataCommand.Prepare(selectSql).ExecuteReader(reader =>
             {
                 long records = 0;
                 long batch = 0;
@@ -46,7 +49,7 @@ namespace Codebot.Data
                 {
                     records++;
                     batch++;
-                    keyId = reader.ReadLong(keyName);
+                    k = reader.ReadLong(keyName);
                     var command = DataCommand.Prepare(insertSql);
                     for (int i = 0; i < reader.FieldCount; i++)
                         command.Add("@" + columns[i], reader.GetValue(i));
@@ -68,7 +71,8 @@ namespace Codebot.Data
                     }
                 }
                 feedback(String.Format("Completed: {0:n0} {1} replicated", records, tableName));
-            }
+            });
+            keyId = k;
         }
     }
 }

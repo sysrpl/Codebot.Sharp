@@ -1,3 +1,6 @@
+#pragma warning disable RECS0060 // Warns when a culture-aware 'IndexOf' call is used by default.
+#pragma warning disable RECS0063 // Warns when a culture-aware 'StartsWith' call is used by default.
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +24,7 @@ namespace Codebot.Web
 
 		static BasicHandler()
 		{
-			includeLog = new Dictionary<string, DateTime>();
+            includeLog = new Dictionary<string, DateTime>();
 			includeData = new Dictionary<string, string>();
 		}
 
@@ -118,8 +121,8 @@ namespace Codebot.Web
 			get
 			{
 				var address = Request.UserHostAddress;
-				return address.Equals("127.0.0.1") || address.StartsWith("192.168.0.") || address.StartsWith("192.168.1.");
-			}
+                return address.Equals("127.0.0.1") || address.StartsWith("192.168.0.") || address.StartsWith("192.168.1.");
+            }
 		}
 
 		/// <summary>
@@ -155,7 +158,8 @@ namespace Codebot.Web
 			}
 		}
 
-		private static string[] platforms = { "windows phone", "windows", "macintosh", "linux", "iphone", "android" };
+		private static readonly string[] platforms = { "windows phone", "windows",
+            "macintosh", "linux", "iphone", "android" };
 
 		/// <summary>
 		/// Returns the platform name of a few known operating systems
@@ -214,26 +218,32 @@ namespace Codebot.Web
 		{
 			if (Context.Request.Cookies[key] != null)
 			{
-				HttpCookie cookie = new HttpCookie(key);
-				cookie.Expires = DateTime.Now.AddDays(-1d);
-				Context.Response.Cookies.Add(cookie);
+                HttpCookie cookie = new HttpCookie(key)
+                {
+                    Expires = DateTime.Now.AddDays(-1d)
+                };
+                Context.Response.Cookies.Add(cookie);
 			}
 		}
 
 		public void WriteCookie(string key, string value, DateTime? expires = null)
 		{
-			HttpCookie cookie = new HttpCookie(key);
-			cookie.Value = value;
-			cookie.Expires = expires.HasValue ? expires.Value : DateTime.Now.AddYears(5);
-			Context.Response.Cookies.Add(cookie);
+            HttpCookie cookie = new HttpCookie(key)
+            {
+                Value = value,
+                Expires = expires ?? DateTime.Now.AddYears(5)
+            };
+            Context.Response.Cookies.Add(cookie);
 		}
 
 		public void WriteCookie(string key, object value, DateTime? expires = null)
 		{
-			HttpCookie cookie = new HttpCookie(key);
-			cookie.Value = value.ToString();
-			cookie.Expires = expires.HasValue ? expires.Value : DateTime.Now.AddYears(5);
-			Context.Response.Cookies.Add(cookie);
+            HttpCookie cookie = new HttpCookie(key)
+            {
+                Value = value.ToString(),
+                Expires = expires ?? DateTime.Now.AddYears(5)
+            };
+            Context.Response.Cookies.Add(cookie);
 		}
 
 		public string ReadCookie(string key, string defaultValue = "")
@@ -244,9 +254,8 @@ namespace Codebot.Web
 
 		public T ReadCookie<T>(string name, T defaultValue = default(T))
 		{
-			T result;
-			TryReadCookie(name, out result, defaultValue);
-			return result;
+            TryReadCookie(name, out T result, defaultValue);
+            return result;
 		}
 
 		public bool TryReadCookie<T>(string key, out T result, T defaultValue = default(T))
@@ -257,16 +266,13 @@ namespace Codebot.Web
 				result = defaultValue;
 				return false;
 			}
-			if (TryConvert(key, out result))
-			{
-				return true;
-			}
-			else
-			{
-				result = defaultValue;
-				return false;
-			}
-		}
+            if (TryConvert(key, out result))
+            {
+                return true;
+            }
+            result = defaultValue;
+            return false;
+        }
 
 		/// <summary>
 		/// Returns true if a cookie with the key value exists
@@ -345,15 +351,31 @@ namespace Codebot.Web
 		/// </summary>
 		public T Read<T>(string key, T defaultValue = default(T))
 		{
-			T result;
-			TryRead(key, out result, defaultValue);
-			return result;
+            TryRead(key, out T result, defaultValue);
+            return result;
 		}
 
-		/// <summary>
-		/// Reads a the first value from request or return empty string if none exists
-		/// </summary>
-		public string ReadAny(params string[] keys)
+        /// <summary>
+        /// Reads an int from the request with a default value
+        /// </summary>
+        public int ReadInt(string key, int defaultValue = default(int))
+        {
+            TryRead(key, out int result, defaultValue);
+            return result;
+        }
+
+        /// <summary>
+        /// Reads a string from the request with a default value
+        /// </summary>
+        public string ReadString(string key, string defaultValue = "")
+        {
+            return Read(key, defaultValue);
+        }
+
+        /// <summary>
+        /// Reads a the first value from request or return empty string if none exists
+        /// </summary>
+        public string ReadAny(params string[] keys)
 		{
 			string result = String.Empty;
 			foreach (var key in keys)
@@ -368,9 +390,8 @@ namespace Codebot.Web
 		/// </summary>
 		public string Read(string key, string defaultValue = "")
 		{
-			string result;
-			TryRead(key, out result, defaultValue);
-			return result;
+            TryRead(key, out string result, defaultValue);
+            return result;
 		}
 
 		/// <summary>
@@ -419,12 +440,26 @@ namespace Codebot.Web
 				Write(converter(item));
 		}
 
+
+		/// <summary>
+		/// Writes an array of bytes to the response and switch content type to octet stream.
+		/// </summary>
+		/// <param name="buffer">The buffer of bytes to transmit.</param>
+		public void Write(byte[] buffer)
+		{
+			if (buffer.Length > 0)
+			{
+				Response.ContentType = "application/octet-stream";
+				Response.BinaryWrite(buffer);
+			}
+		}
+
 		/// <summary>
 		/// Map a server url to a physical file path
 		/// </summary>
-		public string MapPath(string path)
+		public static string MapPath(string path)
 		{
-			return Context.Server.MapPath(path);
+            return HttpContext.Current.Server.MapPath(path);
 		}
 
 		/// <summary>
@@ -538,6 +573,36 @@ namespace Codebot.Web
 			}
 		}
 
+		/// <summary>
+		/// Forwards the request to another server using a url and optional write the result back.
+		/// </summary>
+		/// <param name="url">The url of the server location to forward input to.</param>
+		/// <param name="forwardResponse">If forward response is true, then write back the output.</param>
+		public void ForwardRequest(string url, bool forwardResponse)
+		{
+			var items = Request
+				.QueryString
+				.AllKeys
+				.Select(key => $"{key}={Request.QueryString[key]}");
+			var query = String.Join("&", items);
+			var request = WebRequest.Create($"{url}/?{query}");
+			request.Method = Request.HttpMethod;
+			if (Request.ContentLength > 0)
+			{
+				request.ContentType = Request.ContentType;
+				request.ContentLength = Request.ContentLength;
+				using (var stream = request.GetRequestStream())
+					Request.InputStream.CopyTo(stream);
+			}
+			var response = request.GetResponse();
+			Response.ContentType = response.ContentType;
+			using (var stream = response.GetResponseStream())
+				if (forwardResponse)
+					stream.CopyTo(Response.OutputStream);
+				else
+					stream.ReadByte();
+		}
+
 		private static Document settings;
 		private static Filer filer;
 
@@ -622,13 +687,13 @@ namespace Codebot.Web
 			return Directory.Exists(MapPath(folder));
 		}
 
-		/// <summary>
-		/// Read the contents a cached file and indicate if a file has changed
-		/// </summary>
-		/// <param name="fileName">The file to read</param>
-		/// <param name="fileName">A out bool indicating if the file has changed</param>
-		/// <returns>Returns the contents of a file</returns>
-		public string IncludeRead(string fileName, out bool changed)
+        /// <summary>
+        /// Read the contents a cached file without substitutes
+        /// </summary>
+        /// <param name="fileName">The file to read</param>
+        /// <param name="changed">A out bool indicating if the file has changed</param>
+        /// <returns>Returns the exact contents of a file without sustitues</returns>
+        public string IncludeReadDirect(string fileName, out bool changed)
 		{
 			string data = String.Empty;
 			fileName = MapPath(fileName);
@@ -661,48 +726,62 @@ namespace Codebot.Web
 			return data;
 		}
 
-		public string IncludeReadDirect(string fileName)
-		{
-			bool changed;
-			return IncludeRead(fileName, out changed);
-		}
+        /// <summary>
+        /// Read the contents a cached file without substitutes
+        /// </summary>
+        /// <param name="fileName">The file to read</param>
+        /// <returns>Returns the exact contents of a file without sustitues</returns>
+        public string IncludeReadDirect(string fileName)
+        {
+            return IncludeReadDirect(fileName, out bool changed);
+        }
 
-		/// <summary>
-		/// Read the contents a cached file 
-		/// </summary>
-		/// <param name="fileName">The file to read</param>
-		/// <param name="args">An optional list or items to format</param>
-		/// <returns>Returns the contents of a file</returns>
-		public string IncludeRead(string fileName, params object[] args)
-		{
-			bool changed;
-			string include = IncludeRead(fileName, out changed);
-			int start = include.IndexOf("<%include file=\"");
-			int stop = 0;
-			while (start > -1)
-			{
-				stop = include.IndexOf("\"%>", start);
-				if (stop < start)
-					break;
-				string head = include.Substring(0, start);
-				string tail = include.Substring(stop + 3);
-				start = start + "<%include file=\"".Length;
-				stop = stop - start;
-				string insert = include.Substring(start, stop);
-				include = head + IncludeRead(insert, out changed) + tail;
-				start = include.IndexOf("<%include file=\"");
-			}
-			if (args.Length > 0)
-				include = String.Format(include, args);
-			return include;
-		}
+        /// <summary>
+        /// Read the contents a cached file with include files
+        /// </summary>
+        /// <param name="fileName">The file to read</param>
+        /// <param name="args">An optional list or items to format</param>
+        /// <returns>Returns the contents of a file with include files</returns>
+        public string IncludeRead(string fileName, params object[] args)
+        {
+            string include = IncludeReadDirect(fileName, out bool changed);
+            int start = include.IndexOf("<%include file=\"");
+            int stop = 0;
+            while (start > -1)
+            {
+                stop = include.IndexOf("\"%>", start);
+                if (stop < start)
+                    break;
+                string head = include.Substring(0, start);
+                string tail = include.Substring(stop + 3);
+                start = start + "<%include file=\"".Length;
+                stop = stop - start;
+                string insert = include.Substring(start, stop);
+                include = head + IncludeReadDirect(insert, out changed) + tail;
+                start = include.IndexOf("<%include file=\"");
+            }
+            if (args.Length > 0)
+                include = String.Format(include, args);
+            return include;
+        }
 
-		/// <summary>
-		/// Includes a cached file
-		/// </summary>
-		/// <param name="fileName">File a include</param>
-		/// <param name="isTemplate">Option format the include as a template of the current handler</param>
-		public void Include(string fileName, bool isTemplate = false)
+        /// <summary>
+        /// Read the contents a cached file with include files and formated 
+        /// </summary>
+        /// <param name="fileName">File to include</param>
+        /// <returns>Returns the contents of a file with include files and formatted</returns>
+        public string IncludeReadObject(string fileName, object item)
+        {
+            string s = IncludeRead(fileName);
+            return s.FormatObject(item).ToString();
+        }
+
+        /// <summary>
+        /// Includes a cached file
+        /// </summary>
+        /// <param name="fileName">File to include</param>
+        /// <param name="isTemplate">Optionally format the include as a template of the current handler</param>
+        public void Include(string fileName, bool isTemplate = false)
 		{
 			string s = IncludeRead(fileName);
 			if (isTemplate)
@@ -710,10 +789,10 @@ namespace Codebot.Web
 			Write(s);
 		}
 
-		/// <summary>
-		/// Ends the response and redirects the client to a new page
-		/// </summary>
-		public void Redirect(string url = "")
+        /// <summary>
+        /// Ends the response and redirects the client to a new page
+        /// </summary>
+        public void Redirect(string url = "")
 		{
 			if (url == "")
 				url = Request.UrlReferrer.AbsoluteUri;
@@ -841,6 +920,7 @@ namespace Codebot.Web
 		/// </summary>
 		protected virtual void Render()
 		{
+            Page = this;
 			Run();
 		}
 
@@ -920,10 +1000,15 @@ namespace Codebot.Web
 			}
 		}
 
-		/// <summary>
-		/// Gets the title of the response
-		/// </summary>
-		public virtual string Title
+        /// <summary>
+        /// Normally a reference to this handler
+        /// </summary>
+        public object Page { get; set; }
+
+        /// <summary>
+        /// Gets the title of the response
+        /// </summary>
+        public virtual string Title
 		{
 			get
 			{
@@ -952,14 +1037,13 @@ namespace Codebot.Web
 			}
 		}
 
-		void IHttpHandler.ProcessRequest(HttpContext context)
+        void IHttpHandler.ProcessRequest(HttpContext context)
 		{
 			context.Response.ContentEncoding = System.Text.Encoding.UTF8;
 			Attach(context);
-			PathMapper.Mapper = Server.MapPath;
 			Render();
 		}
 
-		#endregion
+        #endregion
 	}
 }

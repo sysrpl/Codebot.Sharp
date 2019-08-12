@@ -42,18 +42,32 @@ namespace Codebot.Runtime
 		public static string FirstOf(this string value, string s)
 		{
 			var i = value.IndexOf(s);
-			return i < 0 ? String.Empty : value.Substring(0, i);
+			return i < 0 ? s : value.Substring(0, i);
 		}
 
 		public static string SecondOf(this string value, string s)
 		{
-			return value.FirstOf(s).FirstOf(s);
-		}
+            var a = value.Split(new string[] { s }, StringSplitOptions.None);
+            return a.Length > 1 ? a[1] : String.Empty;
+        }
 
-		public static string LastOf(this string value, string s)
+        public static string NthOf(this string value, string s, int index)
+        {
+            if (index < 1)
+                return String.Empty;
+            else if (index == 1)
+                return value.FirstOf(s);
+            else
+            {
+                var a = value.Split(new string[] { s }, StringSplitOptions.None);
+                return a.Length > index ? String.Empty : a[index];
+            }
+        }
+
+        public static string LastOf(this string value, string s)
 		{
 			var a = value.Split(new string[] { s }, StringSplitOptions.None);
-			return a.Length > 0 ? a[a.Length - 1] : String.Empty;
+			return a.Length > 1 ? a[a.Length - 1] : String.Empty;
 		}
 
 		public static string ElementText(this string value, string element)
@@ -66,7 +80,7 @@ namespace Codebot.Runtime
 		public static string LoadResourceText(this string s, Assembly assembly)
 		{
 			var names = assembly.GetManifestResourceNames();
-			string resource = names.First(item => item.EndsWith(s));
+			string resource = names.First(item => item.EndsWith(s, StringComparison.Ordinal));
 			using (Stream stream = assembly.GetManifestResourceStream(resource))
 			using (StreamReader reader = new StreamReader(stream))
 				return reader.ReadToEnd();
@@ -187,14 +201,16 @@ namespace Codebot.Runtime
 		public static string EscapeHtml(this string s)
 		{
 			return s
+				.Replace("\"", " &quot;")
+				.Replace("'", " &apos;")
 				.Replace("&lt;", "&amp;lt;")
 				.Replace("&gt;", "&amp;gt;")
 				.Replace("<", "&lt;")
 				.Replace(">", "&gt;");
 		}
 
-		private static string platformUnknown = "unknown";
-		private static string[] platformNames = new string[] { "windows", "linux", "macintosh", "android", "ios" };
+		private static readonly string platformUnknown = "unknown";
+		private static readonly string[] platformNames = { "windows", "linux", "macintosh", "android", "ios" };
 
 		public static string ToPlatform(this string s)
 		{

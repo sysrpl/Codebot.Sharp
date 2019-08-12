@@ -3,8 +3,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 
-namespace Codebot
+namespace Codebot.Data
 {
+    public static class DataParams
+    {
+        public static DataParameters Add(string key, object value)
+        {
+            return new DataParameters().Add(key, value);
+        }
+    }
+
     public class DataParameters
     {
         private static Dictionary<Type, DbType> map;
@@ -67,7 +75,7 @@ namespace Codebot
 
         public DataParameters()
         {
-          values = new Dictionary<string, object>();
+            values = new Dictionary<string, object>();
         }
 
         public object this[string key]

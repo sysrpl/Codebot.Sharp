@@ -15,10 +15,12 @@ namespace Codebot.Data
 
         public static DataCommand Prepare(string query, bool resource = false)
         {
-            DataCommand command = new DataCommand();
-            command.query = resource ? DataConnect.LoadResourceText(Assembly.GetCallingAssembly(), query) : query;
-            command.parameters = null;
-            command.timeout = 30;
+            DataCommand command = new DataCommand
+            {
+                query = resource ? DataConnect.LoadResourceText(Assembly.GetCallingAssembly(), query) : query,
+                parameters = null,
+                timeout = 30
+            };
             return command;
         }
 
@@ -38,20 +40,21 @@ namespace Codebot.Data
 
         public bool ExecuteHasRows()
         {
-            using (var reader = ExecuteReader())
-                return reader.HasRows;
+            bool rows = false;
+            ExecuteReader(r => rows = r.HasRows);
+            return rows;
         }
 
-        public DbDataReader ExecuteReader()
+        public void ExecuteReader(DataRead read)
         {
-            return DataConnect.ExecuteReader(query, false, timeout, parameters);
+            DataConnect.ExecuteReader(read, query, false, timeout, parameters);
         }
 
         public IEnumerable<Map> ExecuteMaps()
         {
-            using (var reader = ExecuteReader())
+            var maps = new List<Map>();
+            ExecuteReader(reader =>
             {
-                var maps = new List<Map>();
                 var columns = new List<string>();
                 for (var i = 0; i < reader.FieldCount; i++)
                     columns.Add(reader.GetName(i));
@@ -62,27 +65,36 @@ namespace Codebot.Data
                         map.Add(column, reader[column]);
                     maps.Add(map);
                 }
-                return maps;
-            }
+            });
+            return maps;
         }
 
         public IEnumerable<T> Compose<T>(Func<DbDataReader, T> selector)
         {
-            using (var reader = DataConnect.ExecuteReader(query, false, timeout, parameters))
-                return reader.Compose(selector).ToList();
+            List<T> list = null;
+            DataConnect.ExecuteReader(reader =>
+            {
+                list = reader.Compose(selector).ToList();
+            }, query, false, timeout, parameters);
+            return list;
         }
 
         public bool ExecuteSingleResult<T>(out T result)
         {
-            result = default(T);
-            using (var reader = DataConnect.ExecuteReader(query, false, timeout, parameters))
+            bool b = false;
+            T r = default(T);
+            DataConnect.ExecuteReader(reader =>
+            {
                 if (reader.Read())
                 {
-                    result = reader.Read<T>(0);
-                    return true;
+                    r = reader.Read<T>(0);
+                    b = true;
                 }
                 else
-                    return false;
+                    b = false;
+            }, query, false, timeout, parameters);
+            result = r;
+            return b;
         }
 
         public int ExecuteNonQuery()

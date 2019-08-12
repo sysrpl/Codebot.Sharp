@@ -57,9 +57,7 @@
     <Compile Include="WebStats.cs" />
     <Compile Include="DataTemplate.cs" />
     <Compile Include="BasicWebLog.cs" />
-    <Compile Include="Template.cs" />
     <Compile Include="TemplateAttribute.cs" />
-    <Compile Include="TemplateExtensions.cs" />
     <Compile Include="Captcha.cs" />
     <Compile Include="LoggedAttribute.cs" />
     <Compile Include="WebCustomException.cs" />

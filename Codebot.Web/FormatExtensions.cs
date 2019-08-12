@@ -144,7 +144,7 @@ namespace Codebot.Web
 		public static StringBuilder FormatObject(this string format, object source, StringBuilder buffer = null)
 		{
 			if (format == null)
-				throw new ArgumentNullException("format");
+				throw new ArgumentNullException(nameof(format));
 			if (buffer == null)
 				buffer = new StringBuilder(format.Length * 2);
 			if (source is IEnumerable<object>)

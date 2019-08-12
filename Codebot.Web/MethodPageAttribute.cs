@@ -13,5 +13,7 @@ namespace Codebot.Web
 
         public string ContentType { get; set; }
         public string MethodName { get; set; }
+        public string Allow { get; set; }
+        public string Deny { get; set; }
     }
 }

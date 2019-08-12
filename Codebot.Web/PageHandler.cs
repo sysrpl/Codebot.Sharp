@@ -45,18 +45,74 @@ namespace Codebot.Web
 			InvokeDefaultPage();
         }
 
+        /// <summary>
+        /// Provide a chance for desedentdescendents to check if the method is allowed
+        /// </summary>
+        /// <returns>Return true to allow the method to be invoked</returns>
+        /// <param name="methodName">The name of the method to check</param>
+        protected virtual bool AllowMethod(string methodName)
+        {
+            return true;
+        }
+
+        protected virtual void OnDeny(string methodName)
+        {
+        }
+
+        protected virtual void OnAllow(string methodName)
+        {
+        }
+
+        private bool Deny(MethodPageAttribute a)
+        {
+            var deny = a.Deny;
+            if (String.IsNullOrEmpty(deny))
+                return false;
+            var list = deny.Split(",").Select(s => s.Trim().ToLower());
+            var user = Context.User;
+            if (user == null)
+                return list.Contains("anonymous");
+            foreach (var role in list)
+                if (user.IsInRole(role))
+                    return true;
+            return false;
+        }
+
+        private bool Allow(MethodPageAttribute a)
+        {
+            var allow = a.Allow;
+            if (String.IsNullOrEmpty(allow))
+                return true;
+            var list = allow.Split(",").Select(s => s.Trim().ToLower());
+            var user = Context.User;
+            if (user == null)
+                return list.Contains("anonymous");
+            foreach (var role in list)
+                if (user.IsInRole(role))
+                    return true;
+            return false;
+        }
+
         private void InvokeMethod(string methodName)
         {
+
             foreach (var method in GetType().GetMethods())
             {
                 var attribute = method.GetCustomAttributes<MethodPageAttribute>(true)
-                    .Where(a => a.MethodName.ToLower() == methodName)
-                    .FirstOrDefault();
+                    .FirstOrDefault(a => a.MethodName.ToLower() == methodName);
                 if (attribute != null)
                 {
-                    ContentType = attribute.ContentType;
-                    var pageMethod = (WebMethod)Delegate.CreateDelegate(typeof(WebMethod), this, method);
-                    pageMethod();
+                    if (Deny(attribute))
+                        OnDeny(methodName);
+                    else if (Allow(attribute))
+                    {
+                        OnAllow(methodName);
+                        ContentType = attribute.ContentType;
+                        var pageMethod = (WebMethod)Delegate.CreateDelegate(typeof(WebMethod), this, method);
+                        pageMethod();
+                    }
+                    else
+                        OnDeny(methodName);
                     return;
                 }
             }
@@ -71,9 +127,9 @@ namespace Codebot.Web
             try
             {
                 var methodName = Read("method", "").ToLower();
-                if (methodName.Length == 0)
+                if (String.IsNullOrWhiteSpace(methodName))
                     InvokeDefaultPage();
-                else
+                else if (AllowMethod(methodName))
                     InvokeMethod(methodName);
             }
             catch (Exception e)

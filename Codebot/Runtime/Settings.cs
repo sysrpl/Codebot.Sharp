@@ -44,20 +44,17 @@ namespace Codebot.Runtime
 
         public static int ReadInt(string name, int defaultValue = 0)
         {
-            int value;
-            return int.TryParse(ConfigurationManager.AppSettings[name], out value) ? value : defaultValue;
+            return int.TryParse(ConfigurationManager.AppSettings[name], out int value) ? value : defaultValue;
         }
 
         public static double ReadFloat(string name, double defaultValue = 0)
         {
-            double value;
-            return double.TryParse(ConfigurationManager.AppSettings[name], out value) ? value : defaultValue;
+            return double.TryParse(ConfigurationManager.AppSettings[name], out double value) ? value : defaultValue;
         }
 
         public static bool ReadBool(string name, bool defaultValue = false)
         {
-            bool value;
-            return bool.TryParse(ConfigurationManager.AppSettings[name], out value) ? value : defaultValue;
+            return bool.TryParse(ConfigurationManager.AppSettings[name], out bool value) ? value : defaultValue;
         }
     }
 }
