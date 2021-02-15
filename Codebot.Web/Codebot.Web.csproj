@@ -75,6 +75,7 @@
     <Compile Include="Security\BasicWebApplication.cs" />
     <Compile Include="LoginPageAttribute.cs" />
     <Compile Include="PageTypeAttribute.cs" />
+    <Compile Include="Templates.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -42,7 +42,7 @@ namespace Codebot.Web
         /// </summary>
         protected virtual void EmptyMethod(string methodName)
         {
-			InvokeDefaultPage();
+            InvokeDefaultPage();
         }
 
         /// <summary>

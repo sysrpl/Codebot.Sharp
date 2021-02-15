@@ -18,22 +18,50 @@ namespace Codebot.Web
 	{
 		public delegate string WriteConverter(object item);
 		public delegate object QuerySectionsFunc(BasicHandler handler);
+        public delegate object FindObjectFunc(string key);
 
-		private static Dictionary<string, DateTime> includeLog;
+        private static Dictionary<string, object> objects;
+        private static Dictionary<string, DateTime> includeLog;
 		private static Dictionary<string, string> includeData;
 
-		static BasicHandler()
+        /// <summary>
+        /// The current BasicHandler if any
+        /// </summary>
+        public static BasicHandler Current
+        {
+            get
+            {
+                var h = HttpContext.Current?.CurrentHandler;
+                return h is BasicHandler ? h as BasicHandler : null;
+            }
+        }
+
+        static BasicHandler()
 		{
+            objects = new Dictionary<string, object>();
             includeLog = new Dictionary<string, DateTime>();
 			includeData = new Dictionary<string, string>();
+            PathMapper.Mapper = MapPath;
 		}
 
+        /// <summary>
+        /// The HttpContext associated with the handler
+        /// </summary>
 		public HttpContext Context { get; private set; }
 
+        /// <summary>
+        /// The HttpRequest associated with the handler
+        /// </summary>
 		public HttpRequest Request { get { return Context.Request; } }
 
+        /// <summary>
+        /// The HttpResponse associated with the handler
+        /// </summary>
 		public HttpResponse Response { get { return Context.Response; } }
 
+        /// <summary>
+        /// The HttpServerUtility associated with the handler
+        /// </summary>
 		public HttpServerUtility Server { get { return Context.Server; } }
 
 		/// <summary>
@@ -44,6 +72,9 @@ namespace Codebot.Web
 			Context = context;
 		}
 
+        /// <summary>
+        /// Returns the path and query of the request
+        /// </summary>
 		public PathQuery PathAndQuery
 		{
 			get
@@ -603,13 +634,31 @@ namespace Codebot.Web
 					stream.ReadByte();
 		}
 
-		private static Document settings;
+        /// <summary>
+        /// Finds an object based on a key and find function
+        /// </summary>
+        /// <returns>The object either from cache or the find function</returns>
+        /// <param name="key">The key used to chache the object</param>
+        /// <param name="find">The function used to find the object</param>
+        public static object FindObject(string key, FindObjectFunc find)
+        {
+            lock (objects)
+            {
+                if (objects.ContainsKey(key))
+                    return objects[key];
+                var item = find(key);
+                objects.Add(key, item);
+                return item;
+            }
+        }
+
+        private static Document settings;
 		private static Filer filer;
 
 		/// <summary>
 		/// Read access to the global settings document
 		/// </summary>
-		protected Filer Settings
+		protected static Filer Settings
 		{
 			get
 			{
